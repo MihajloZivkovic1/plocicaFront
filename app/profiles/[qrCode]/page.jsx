@@ -13,7 +13,7 @@ async function fetchProductData(qrCode) {
 }
 
 export default async function ProfilePage({ params }) {
-  const { qrCode } = params;
+  const { qrCode } = await params;
 
   const productData = await fetchProductData(qrCode);
   const { product } = productData;
