@@ -33,7 +33,6 @@ export default async function ProfilePage({ params }) {
 
   return (
     <div>
-      <h1>ProductStatus status {product.status}</h1>
       <ProfileData qrCode={qrCode} />
     </div>
   );

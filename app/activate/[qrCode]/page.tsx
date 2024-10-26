@@ -27,9 +27,10 @@ export default async function ActivatePage({ params }: { params: { qrCode: strin
   }
 
   return (
-    <div>
-      <h1>This is Activation Form that is sending data to server i hope..</h1>
-      <h1>{qrCode}</h1>
+    <div className='pt-1'>
+      <h1 className='uppercase text-lg'>Activation Page</h1>
+
+      <h1>QR Code: {qrCode}</h1>
 
       <ActivationForm qrCode={qrCode} ></ActivationForm>
     </div>
