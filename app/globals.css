@@ -34,6 +34,7 @@ body {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -66,7 +67,45 @@ body {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.height-for-form {
+  min-height: 70vh;
+}
+
+/* styles.css or your component-specific CSS file */
+/* styles.css or your component-specific CSS file */
+.markdown-content {
+  overflow-wrap: break-word;
+  /* Break long words */
+  word-break: break-word;
+  /* Ensure words break */
+  line-height: 1.6;
+  /* Improve readability */
+  max-width: 800px;
+  /* Optional: set a max width */
+  margin: 0 auto;
+  /* Center the content */
+  padding: 1rem;
+  /* Optional: add some padding */
+}
+
+/* Additional styles to manage list items */
+.markdown-content ul,
+.markdown-content ol {
+  padding-left: 1.5em;
+  /* Add space for bullet points */
+  margin-bottom: 1rem;
+  /* Add space between lists */
+}
+
+.markdown-content li {
+  overflow-wrap: break-word;
+  /* Ensure list items break */
+  word-break: break-word;
+  /* Ensure words break in list items */
 }

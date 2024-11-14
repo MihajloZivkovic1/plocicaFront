@@ -15,24 +15,24 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu"
-import { logout } from "./lib";
 
+import HeroSectionImageWithReviews from "@/components/hero";
+import IconSection2ColsGrid from "@/components/icons";
+import { logout } from "../lib";
+import { FrequentQuestions } from "@/components/FrequentQuestions";
+import DefaultLayout from "./dashboard/layout";
 export default function Home() {
 
-  return (
+  return (<DefaultLayout>
     <div>
-      Home
-      <div className="mt-15">
-        <form
-          action={async () => {
-            "use server";
-            await logout();
-
-          }}
-        >
-          <button type="submit">Logout</button>
-        </form>
+      <div className="flex flex-col items-center justify-center">
+        <HeroSectionImageWithReviews />
+        <IconSection2ColsGrid></IconSection2ColsGrid>
+        <FrequentQuestions></FrequentQuestions>
       </div>
+
+
     </div>
-  );
+  </DefaultLayout>);
 }
+

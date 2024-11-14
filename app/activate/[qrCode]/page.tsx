@@ -20,18 +20,19 @@ export default async function ActivatePage({ params }: { params: { qrCode: strin
   const { qrCode } = await params
 
   const product = await fetchProductData(qrCode);
-  console.log(product.status);
+
 
   if (product.status.trim().toLowerCase() === 'active') {
     return permanentRedirect(`/profiles/${qrCode}`);
   }
+  // if (product.status.trim().toLowerCase() === 'active') {
+  //   return permanentRedirect(`/contact`);
+  // }
 
   return (
-    <div className='pt-1'>
+    <div>
       <h1 className='uppercase text-lg'>Activation Page</h1>
-
       <h1>QR Code: {qrCode}</h1>
-
       <ActivationForm qrCode={qrCode} ></ActivationForm>
     </div>
   )

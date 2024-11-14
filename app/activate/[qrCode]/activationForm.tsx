@@ -4,13 +4,14 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation'; // for redirection
 import { Input } from "@/components/ui/input"
 import { Button } from '@/components/ui/button';
+
+
 export default function ActivationForm({ qrCode }: { qrCode: string }) {
   const [formData, setFormData] = useState({
     activationCode: '',
     profileName: '',
     email: '',
     password: '',
-    firstName: '',
   });
 
   const [successMessage, setSuccessMessage] = useState('');
@@ -39,10 +40,30 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
       });
 
       if (response.ok) {
-        setSuccessMessage('Profile activated successfully! Redirecting...');
+        setSuccessMessage('Profile activated successfully! Redirecting...'); //modal napraviti
         setErrorMessage('');
-        setTimeout(() => {
-          router.push(`/profiles/${qrCode}`);
+
+        const profileResponse = await fetch(`http://localhost:3000/profiles/${qrCode}`);
+        const profile = await profileResponse.json();
+
+        const id = profile.profile?.id;
+
+        const loginResponse = await fetch('/api/auth/login', {
+          method: "POST",
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
+
+        if (!loginResponse.ok) {
+          throw new Error('Failed to log in after activation');
+        }
+
+
+        setTimeout(async () => {
+
+          router.push(`/edit-profile/${id}?tab=general`);
         }, 2000);
       } else {
         const errorData = await response.json();
@@ -57,13 +78,13 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
   };
 
   return (
-    <div className='mt-5'>
+    <div className='flex flex-col items-center h-screen'>
       <br></br>
       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
 
-      <form onSubmit={handleSubmit} className='pr-4 pl-4'>
-        <div className="grid gap-6 mb-6 md:grid-cols-2">
+      <form onSubmit={handleSubmit} className='w-full max-w-lg p-4' >
+        <div className="grid gap-6 mb-6 grid-cols-1 sm:grid-cols-2">
           <div>
             <label htmlFor="activationCode" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Activation Code</label>
             <Input
@@ -77,7 +98,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
             />
           </div>
           <div>
-            <label htmlFor="profileName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Profile Name</label>
+            <label htmlFor="profileName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ime Pokojnika</label>
             <Input
               type="text"
               id="profileName"
@@ -112,7 +133,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
             // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="firstName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
             <Input
               type="text"
@@ -123,7 +144,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               required
             // className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             />
-          </div>
+          </div> */}
         </div>
         {/* <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
           Activate Profile

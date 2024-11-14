@@ -1,7 +1,7 @@
+"use server"
 import { SignJWT, jwtVerify } from "jose";
 import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
-import { permanentRedirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 
 const secretKey = "secret";
@@ -11,7 +11,7 @@ export async function encrypt(payload: any) {
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime("10 sec from now")
+    .setExpirationTime("3h")
     .sign(key);
 }
 
@@ -35,12 +35,12 @@ export async function login(formData: FormData) {
   })
 
   if (!res.ok) {
-    throw new Error('Invalid credentials');
+    throw new Error("invalid credentials")
   }
 
-  const user = await res.json();
 
-  const expires = new Date(Date.now() + 10 * 1000);
+  const user = await res.json();
+  const expires = new Date(Date.now() + 60 * 60 * 1000);
   const session = await encrypt({ user, expires });
 
 
@@ -48,9 +48,8 @@ export async function login(formData: FormData) {
 }
 
 export async function logout() {
-  // Destroy the session
   (await cookies()).set("session", "", { expires: new Date(0) });
-  permanentRedirect('/login');
+  return NextResponse.redirect('http://localhost:3001/login');
 }
 
 export async function getSession() {
@@ -63,7 +62,7 @@ export async function updateSession(request: NextRequest) {
   const session = request.cookies.get("session")?.value;
   if (!session) return;
   const parsed = await decrypt(session);
-  parsed.expires = new Date(Date.now() + 10 * 1000);
+  parsed.expires = new Date(Date.now() + 60 * 60 * 1000);
   const res = NextResponse.next();
   res.cookies.set({
     name: "session",

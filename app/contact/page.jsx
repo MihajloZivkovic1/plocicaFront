@@ -6,7 +6,9 @@ import { useRouter } from 'next/navigation'; // for redirection
 export default function Contact() {
 
   return (
-    <div>Contact</div>
+    <div>
+      Contact
+    </div>
   )
 
 }
