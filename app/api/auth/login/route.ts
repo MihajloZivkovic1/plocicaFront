@@ -2,8 +2,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { login } from '../../../../lib'; // Adjust the import to your login helper path
 
-export async function POST(req: NextRequest, res: NextResponse) {
-  const { email, password } = await req.json(); // Parse the JSON body
+export async function POST(req: NextRequest) {
+  const { email, password } = await req.json();
 
   try {
     const formData = new FormData();
@@ -16,7 +16,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       }
     );
     return NextResponse.json({ message: 'Login successful' }, { status: 200 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
   }
 }

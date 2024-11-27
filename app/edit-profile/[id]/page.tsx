@@ -8,6 +8,12 @@ import EventsEdit from "../components/eventsEdit";
 import StoriesEdit from "../components/storiesEdit";
 import MediaEdit from "../components/mediaEdit";
 
+type Profile = {
+  id: number;
+
+};
+
+
 async function fetchUserProfiles(userId: number) {
   const response = await fetch(`http://localhost:3000/users/getUsersProfiles/${userId}`);
   if (!response.ok) throw new Error("Failed to fetch profiles");
@@ -27,7 +33,7 @@ export default function EditProfile() {
   const [id, setId] = useState<string>('');
   const [tab, setTab] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
-  const [userId, setUserId] = useState(null);
+
 
 
   useEffect(() => {
@@ -41,7 +47,7 @@ export default function EditProfile() {
         const userId = await fetchUserId();
 
         const userProfiles = await fetchUserProfiles(userId);
-        const profileIds = userProfiles.map((profile: any) => profile.id.toString());
+        const profileIds = userProfiles.map((profile: Profile) => profile.id.toString());
 
 
         if (profileIds.includes(profileId)) {

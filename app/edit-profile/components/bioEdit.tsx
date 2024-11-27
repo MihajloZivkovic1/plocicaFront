@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from 'react';
-import { MdEditor, MdPreview } from 'md-editor-rt';
+import { MdEditor } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import 'md-editor-rt/lib/preview.css';
 import { Button } from '@/components/ui/button'

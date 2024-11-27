@@ -1,27 +1,6 @@
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
-} from "@/components/ui/navigation-menu"
-
 import HeroSectionImageWithReviews from "@/components/hero";
-import IconSection2ColsGrid from "@/components/icons";
-import { logout } from "../lib";
-import { FrequentQuestions } from "@/components/FrequentQuestions";
 import DefaultLayout from "./dashboard/layout";
-import { Button } from "@/components/ui/button"
 import Services from "@/components/ui/Services"
 import Footer from "@/components/ui/Footer"
 import { PackageOpen, Scan, Camera, Edit, Book } from "lucide-react";
@@ -34,7 +13,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <div className="flex flex-col items-center justify-center">
         <HeroSectionImageWithReviews />
-        {/* <FrequentQuestions /> */}
+
         <TestimonialSection />
 
         <div className="container mx-auto px-4 py-12 bg-white">
@@ -78,7 +57,7 @@ export default function Home() {
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex-1 flex flex-col justify-center mb-20">
               <h3 className="text-2xl md:text-3xl font-semibold mb-4">Customize Your Memorial Profile</h3>
-              <p className="mb-6">With our user-friendly admin panel, you have complete control over your loved one's memorial profile. Easily edit and update information, add photos, and share cherished memories.</p>
+              <p className="mb-6">With our user-friendly admin panel, you have complete control over your loved one&apos;s memorial profile. Easily edit and update information, add photos, and share cherished memories.</p>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Edit className="mr-2 mt-1 text-primary" />
@@ -98,7 +77,7 @@ export default function Home() {
                   <Book className="mr-2 mt-1 text-primary" />
                   <div>
                     <h4 className="font-bold">Story Sharing</h4>
-                    <p className="text-sm text-muted-foreground">Write and share stories about your loved one's life</p>
+                    <p className="text-sm text-muted-foreground">Write and share stories about your loved one&apos;s life</p>
                   </div>
                 </div>
               </div>

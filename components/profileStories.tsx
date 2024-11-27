@@ -2,17 +2,19 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
-import Link from 'next/link';
-import CreateStoryModal from './CreateStoryModal';
-import { MdEditor, MdPreview } from 'md-editor-rt';
+import { MdEditor } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import 'md-editor-rt/lib/preview.css';
 import { Input } from './ui/input';
-import { MessageAlert } from "@/components/ui/MessageAlert"
 
+interface Story {
+  id: string;
+  title: string;
+  text: string
+}
 
-export default function profileStories({ id }: { id: string | undefined }) {
-  const [stories, setStories] = useState<any[]>([]);
+export default function ProfileStories({ id }: { id: string | undefined }) {
+  const [stories, setStories] = useState<Story[]>([]);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
   // const [successMessage, setSuccessMessage] = useState("");
@@ -130,7 +132,7 @@ export default function profileStories({ id }: { id: string | undefined }) {
         {stories.length === 0 ? (
           <p>No stories available</p>
         ) : (
-          stories.map((story: { id: string; title: string; text: string }, index) => (
+          stories.map((story: Story, index) => (
             <div key={`${story.id}-${index}`} className="border m-5 rounded-md shadow-md">
               <Input
                 type="text"

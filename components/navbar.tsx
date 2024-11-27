@@ -2,9 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { JSX, SVGProps } from "react";
 import { NextResponse } from "next/server";
-import { QrCode, QrCodeIcon } from "lucide-react";
+import { QrCodeIcon } from "lucide-react";
 
 
 export function Navbar({ session, logout }: NavbarProps) {
@@ -136,24 +135,3 @@ const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick, className }) =>
   </Link >
 );
 
-function QRCodeIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-    >
-      <rect x="2" y="2" width="8" height="8" fill="black" />
-      <rect x="4" y="4" width="4" height="4" fill="white" />
-      <rect x="2" y="14" width="8" height="8" fill="black" />
-      <rect x="4" y="16" width="4" height="4" fill="white" />
-      <rect x="14" y="2" width="8" height="8" fill="black" />
-      <rect x="16" y="4" width="4" height="4" fill="white" />
-      <rect x="10" y="10" width="4" height="4" fill="black" />
-      <rect x="16" y="16" width="2" height="2" fill="black" />
-    </svg>
-  );
-}

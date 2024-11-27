@@ -11,6 +11,23 @@ import { User, Book, Church, Calendar, Image as ImageIcon, BookOpen, Film } from
 import { fetchMedia } from '@/app/lib/fetchMedia'
 
 
+interface MediaItem {
+  mediaType: 'photo' | 'video';
+  url: string;
+  id: string;
+}
+
+interface Story {
+  title: string;
+  text: string;
+}
+
+interface Event {
+  title: string;
+  location: string;
+  dateOfEvent: string;
+}
+
 async function fetchProfileData(qrCode: string) {
   const res = await fetch(`http://localhost:3000/profiles/${qrCode}`)
   if (!res.ok) {
@@ -29,8 +46,8 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
   const media = await fetchMedia(profile.id);
   const mediaArray = media.media
   console.log(mediaArray);
-  const images = mediaArray.filter((item: any) => item.mediaType === 'photo');
-  const videos = mediaArray.filter((item: any) => item.mediaType === 'video');
+  const images = mediaArray.filter((item: MediaItem) => item.mediaType === 'photo');
+  const videos = mediaArray.filter((item: MediaItem) => item.mediaType === 'video');
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString("en-GB", {
@@ -44,7 +61,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
     <div className="min-h-screen bg-gray-100">
       <div className="relative mb-4">
         <Image
-          src={profile?.photo ?? '/placeholder.svg?height=384&width=384'}
+          src={profile?.photo ?? '/avatarmenwoman.jpg'}
           alt={profile?.profileName || 'Profile photo'}
           width={1000}
           height={562}
@@ -102,7 +119,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                 Events
               </h2>
               <div className="space-y-4">
-                {events.map((event: { title: string, location: string, dateOfEvent: string }, index: number) => (
+                {events.map((event: Event, index: number) => (
                   <Card key={index}>
                     <CardContent className="p-3 sm:p-4">
                       <h3 className="text-base sm:text-lg font-semibold">{event.title}</h3>
@@ -126,7 +143,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                   <h3 className="text-lg font-semibold mb-2">Images</h3>
                   <ScrollArea className="h-48 sm:h-72">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-                      {images.map((image: any, index: number) => (
+                      {images.map((image: MediaItem, index: number) => (
                         <div key={image.id}
                           className="aspect-square relative"
                         >
@@ -151,7 +168,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                   </h3>
                   <ScrollArea className="h-48 sm:h-72">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
-                      {videos.map((video: any) => (
+                      {videos.map((video: MediaItem) => (
                         <div key={video.id} className="aspect-video relative">
                           <video
                             src={video.url}
@@ -177,7 +194,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                 Stories
               </h2>
               <div className="space-y-4">
-                {stories.map((story: { title: string; text: string }, index: number) => (
+                {stories.map((story: Story, index: number) => (
                   <StoryModal key={index} story={story} />
                 ))}
               </div>

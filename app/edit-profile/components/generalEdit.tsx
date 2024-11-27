@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea'
 import { MessageAlert } from "@/components/ui/MessageAlert";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 type Profile = {
@@ -17,20 +16,9 @@ type Profile = {
   };
 };
 
-type FormDataType = {
-  profileName: string;
-  dateOfBirth: string;
-  dateOfDeath: string;
-  religion: string;
-  placeOfBirth: string;
-  placeOfDeath: string;
-  text: string;
-  photo: string | File;
-};
 
 export default function GeneralEdit({ id }: { id: string }) {
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [canSubmit, setCanSubmit] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
 
@@ -177,10 +165,14 @@ export default function GeneralEdit({ id }: { id: string }) {
       setErrorMessage("");
       setErrors({ profileName: "", dateOfBirth: "", dateOfDeath: "", text: "" });
 
-    } catch (error: any) {
-      console.error('Error updating profile:', error);
-      console.log('There was an error updating the profile');
-      setErrors(error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error('Error updating profile:', error.message);
+        setErrorMessage(error.message);
+      } else {
+        console.error('Unexpected error:', error);
+        setErrorMessage('An unexpected error occurred.');
+      }
       setSuccessMessage("");
     }
   };

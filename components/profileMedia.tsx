@@ -1,9 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from './ui/button';
 import Image from "next/image"
-
+interface Media {
+  id: string;
+  url: string;
+  fileName: string
+}
 export default function ProfileMedia({ id }: { id: string | undefined }) {
-  const [media, setMedia] = useState<any[]>([]);
+  const [media, setMedia] = useState<Media[]>([]);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   console.log(selectedFile);

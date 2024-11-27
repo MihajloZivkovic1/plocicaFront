@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
 
@@ -11,11 +11,12 @@ export default function StoryModal({ story }: { story: { title: string; text: st
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  const handleClickOutside = (event: MouseEvent) => {
+  // Wrap handleClickOutside in useCallback to stabilize it
+  const handleClickOutside = useCallback((event: MouseEvent) => {
     if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
       closeModal();
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (isOpen) {
@@ -26,7 +27,7 @@ export default function StoryModal({ story }: { story: { title: string; text: st
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen]);
+  }, [isOpen, handleClickOutside]);
 
   return (
     <>

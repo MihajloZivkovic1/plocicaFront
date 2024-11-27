@@ -36,7 +36,7 @@ export default function HeroSectionImageWithReviews() {
                 </p>
                 <div className="mt-5">
                   <p className="text-sm italic">
-                    "MemoryPlate helped us create a beautiful tribute."
+                    &quot;MemoryPlate helped us create a beautiful tribute.&quot;
                   </p>
                   <p className="text-xs mt-1">- The Johnson Family</p>
                 </div>
@@ -93,4 +93,3 @@ export default function HeroSectionImageWithReviews() {
 const heart = (
   <Heart className="h-4 w-4 text-rose-500 fill-rose-500" />
 );
-

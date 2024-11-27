@@ -1,9 +1,6 @@
-
 import React from 'react';
 import ActivationForm from './activationForm';
 import { permanentRedirect } from 'next/navigation';
-import ProfileData from '@/app/profiles/[qrCode]/profileData';
-
 
 async function fetchProductData(qrCode: string) {
   const res = await fetch(`http://localhost:3000/products/${qrCode}`);
@@ -16,23 +13,24 @@ async function fetchProductData(qrCode: string) {
   return productData.product;
 }
 
-export default async function ActivatePage({ params }: { params: { qrCode: string } }) {
-  const { qrCode } = await params
+export default async function ActivatePage({ params }: { params: Promise<{ qrCode: string }> }) {
+
+  const { qrCode } = await params;
+
+
+  console.log(qrCode);
+
 
   const product = await fetchProductData(qrCode);
 
 
   if (product.status.trim().toLowerCase() === 'active') {
-    return permanentRedirect(`/profiles/${qrCode}`);
+    permanentRedirect(`/profiles/${qrCode}`);
   }
-  // if (product.status.trim().toLowerCase() === 'active') {
-  //   return permanentRedirect(`/contact`);
-  // }
 
   return (
     <div>
-      <ActivationForm qrCode={qrCode} ></ActivationForm>
+      <ActivationForm qrCode={qrCode} />
     </div>
-  )
-
+  );
 }

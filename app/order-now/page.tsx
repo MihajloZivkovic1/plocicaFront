@@ -7,7 +7,14 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select"
 import { ShoppingCart } from "@/components/ui/shopping-cart"
 import { useToast } from "@/hooks/use-toast"
+import Link from 'next/link'
 
+interface Country {
+  cca2: string;
+  name: {
+    common: string;
+  };
+}
 interface FormData {
   country: string;
   email: string;
@@ -20,7 +27,7 @@ interface FormData {
 
 export default function OrderNow() {
   const router = useRouter()
-  const [countries, setCountries] = useState([])
+  const [countries, setCountries] = useState<Country[]>([]);
   const [formData, setFormData] = useState<FormData>({
     country: '',
     email: '',
@@ -44,15 +51,17 @@ export default function OrderNow() {
           }
         })
         const data = await response.json()
-        const sortedCountries = data.sort((a: any, b: any) => a.name.common.localeCompare(b.name.common))
+        const sortedCountries = data.sort((a: Country, b: Country) => a.name.common.localeCompare(b.name.common))
         setCountries(sortedCountries)
-      } catch (error: any) {
-        console.error("Error fetching countries:", error)
-        toast({
-          title: "Error",
-          description: `Failed to fetch countries.${error.message}`,
-          variant: "destructive",
-        })
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error("Error fetching countries:", error.message);
+          toast({
+            title: "Error",
+            description: `Failed to fetch countries: ${error.message}`,
+            variant: "destructive",
+          });
+        }
       }
     }
     const timer = setTimeout(() => {
@@ -62,7 +71,7 @@ export default function OrderNow() {
 
     return () => clearTimeout(timer);
 
-  }, [])
+  }, [toast])
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
@@ -128,7 +137,7 @@ export default function OrderNow() {
               <SelectValue placeholder="Select a country" />
             </SelectTrigger>
             <SelectContent>
-              {countries.map((country: any) => (
+              {countries.map((country: Country) => (
                 <SelectItem key={country.cca2} value={country.name.common}>
                   {country.name.common}
                 </SelectItem>
@@ -267,18 +276,18 @@ export default function OrderNow() {
 
       <div className="mb-6">
         <p className="text-sm text-gray-500">
-          Nastavkom kupovine vi se slažete sa našim <a href="#" className="text-black-600 underline">Uslovima kupovine</a> <span> i </span>
-          <a href="#" className="text-black-600 underline">Politikom privatnosti</a>.
+          Nastavkom kupovine vi se slažete sa našim <Link href="#" className="text-black-600 underline">Uslovima kupovine</Link> <span> i </span>
+          <Link href="#" className="text-black-600 underline">Politikom privatnosti</Link>.
         </p>
       </div>
 
       <div className="flex justify-between items-center">
-        <a href="/" className="text-sm text-black-600 hover:underline flex items-center space-x-2">
+        <Link href="/" className="text-sm text-black-600 hover:underline flex items-center space-x-2">
           <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M20 11.2H6.8l3.7-3.7-1-1L3.9 12l5.6 5.5 1-1-3.7-3.7H20z" />
           </svg>
           <span>Povratak</span>
-        </a>
+        </Link>
         <Button type="submit">Naručite</Button>
       </div>
     </form>

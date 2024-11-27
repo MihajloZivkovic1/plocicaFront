@@ -45,7 +45,7 @@ function FeatureCard({ icon, title, description }: FeatureCardProps) {
 }
 
 interface FeatureCardProps {
-  icon: any,
+  icon: React.ReactNode,
   title: string,
   description: string
 }

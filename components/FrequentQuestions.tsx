@@ -27,7 +27,7 @@ export function FrequentQuestions() {
         <div className="space-y-2">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">FAQ</h2>
           <p className="text-gray-500 md:text-xl/relaxed dark:text-gray-400">
-            Got a question? We've got answers. If you have other questions, please email support.
+            Got a question? We&apos;ve got answers. If you have other questions, please email support.
           </p>
         </div>
         <div className="space-y-4">

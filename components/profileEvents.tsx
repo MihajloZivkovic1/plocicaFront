@@ -3,8 +3,21 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { MessageAlert } from '@/components/ui/MessageAlert'
-export default function profileEvents({ id }: { id: string | undefined }) {
-  const [events, setEvents] = useState<any[]>([]);
+
+
+interface Event {
+  id: string;
+  title: string;
+  location: string;
+  dateOfEvent: Date;
+  timeOfEvent: Date;
+}
+
+
+
+
+export default function ProfileEvents({ id }: { id: string | undefined }) {
+  const [events, setEvents] = useState<Event[]>([]);
 
   const [title, setTitle] = useState("");
   const [location, setLocation] = useState("");
@@ -127,7 +140,7 @@ export default function profileEvents({ id }: { id: string | undefined }) {
           {events.length === 0 ? (
             <p>No events available</p>
           ) : (
-            events.map((event: { id: string; title: string; location: string, dateOfEvent: Date, timeOfEvent: Date }, index) => (
+            events.map((event: Event, index) => (
               <div key={`${event.id}-${index}`} className="border m-5 rounded-md shadow-md">
                 <Input
                   type="text"

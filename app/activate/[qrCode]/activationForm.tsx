@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
-import { login } from "../../../lib"
+
 export default function ActivationForm({ qrCode }: { qrCode: string }) {
   const [formData, setFormData] = useState({
     activationCode: '',

@@ -1,14 +1,10 @@
 "use client"
-import { getSession, login, logout } from "../../lib";
+import { login } from "../../lib";
 import { Button } from "@/components/ui/button";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MessageAlert } from "@/components/ui/MessageAlert"
-
-
 export default function Page() {
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
   const [loginError, setLoginError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
@@ -31,12 +27,18 @@ export default function Page() {
         password: formData.password
       });
       router.push("/");
-    } catch (err: any) {
-      if (err.message === "NotFound") {
-        setLoginError("User with that email does not exists");
-      }
-      else if (err.message === 'CredentialsError') {
-        setLoginError("Invalid password for user, please try again");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        if (err.message === "NotFound") {
+          setLoginError("User with that email does not exist");
+        } else if (err.message === "CredentialsError") {
+          setLoginError("Invalid password for user, please try again");
+        } else {
+          setLoginError("An unexpected error occurred. Please try again.");
+        }
+      } else {
+        console.error("Unexpected error:", err);
+        setLoginError("An unexpected error occurred. Please try again.");
       }
     }
   };
@@ -52,11 +54,6 @@ export default function Page() {
                   href="#"
                   className="flex items-center mb-8 text-3xl font-semibold text-gray-900 dark:text-white"
                 >
-                  <img
-                    className="w-10 h-10 mr-3"
-                    src="https://picsum.photos/seed/picsum/200/300"
-                    alt="logo"
-                  />
                   MemoryPlate
                 </a>
                 <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white">
