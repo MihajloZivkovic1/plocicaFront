@@ -3,6 +3,7 @@ import { getSession, login, logout } from "../../lib";
 import { Button } from "@/components/ui/button";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
+import { MessageAlert } from "@/components/ui/MessageAlert"
 
 
 export default function Page() {
@@ -24,12 +25,19 @@ export default function Page() {
     form.append("email", formData.email);
     form.append("password", formData.password);
 
-
     try {
-      await login(form);
+      await login({
+        email: formData.email,
+        password: formData.password
+      });
       router.push("/");
     } catch (err: any) {
-      setLoginError("Invalid credentials, user not found");
+      if (err.message === "NotFound") {
+        setLoginError("User with that email does not exists");
+      }
+      else if (err.message === 'CredentialsError') {
+        setLoginError("Invalid password for user, please try again");
+      }
     }
   };
 
@@ -54,7 +62,7 @@ export default function Page() {
                 <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white">
                   Sign in to your account
                 </h1>
-                {loginError && <p className="text-red-500">{loginError}</p>}
+                {<MessageAlert type="error" message={loginError} />}
                 <form onSubmit={handleSubmit}
                 >
                   <div>
@@ -95,7 +103,7 @@ export default function Page() {
                     />
                   </div>
                   <div className="pt-8">
-                    <Button className="w-full py-3 text-lg">Log in</Button>
+                    <Button type="submit" className="w-full py-3 text-lg">Log in</Button>
                   </div>
                 </form>
               </div>

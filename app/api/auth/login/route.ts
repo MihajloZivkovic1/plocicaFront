@@ -10,7 +10,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
     formData.append('email', email);
     formData.append('password', password);
 
-    await login(formData);
+    await login(
+      {
+        email, password
+      }
+    );
     return NextResponse.json({ message: 'Login successful' }, { status: 200 });
   } catch (error) {
     return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });

@@ -8,11 +8,15 @@ import { MdEditor, MdPreview } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import 'md-editor-rt/lib/preview.css';
 import { Input } from './ui/input';
+import { MessageAlert } from "@/components/ui/MessageAlert"
+
+
 export default function profileStories({ id }: { id: string | undefined }) {
   const [stories, setStories] = useState<any[]>([]);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
-
+  // const [successMessage, setSuccessMessage] = useState("");
+  const [storyMessages, setStoryMessages] = useState<Record<string, string>>({}); // Map of story ID to message
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -88,14 +92,27 @@ export default function profileStories({ id }: { id: string | undefined }) {
         })
       })
 
-      const newStory = await response.json();
-      console.log(newStory);
+      const updatedStory = await response.json();
+      console.log(updatedStory);
       if (response.ok) {
-        console.log("Story updated succesfully");
-        setText(newStory.story.text)
-      }
-      else {
-        console.log("fucked up");
+        setStories((prevStories) =>
+          prevStories.map((story) =>
+            story.id === storyId ? { ...story, title, text: story.text } : story
+          )
+        );
+
+        setStoryMessages((prev) => ({
+          ...prev,
+          [storyId]: "Story updated successfully!",
+        }));
+
+        setTimeout(() => {
+          setStoryMessages((prev) => {
+            const updatedMessages = { ...prev };
+            delete updatedMessages[storyId];
+            return updatedMessages;
+          });
+        }, 3000);
       }
     } catch (error) {
       console.error(error)
@@ -122,6 +139,17 @@ export default function profileStories({ id }: { id: string | undefined }) {
                 onChange={(e) => setTitle(e.target.value)} // Capture title changes
               />
               <MdEditor modelValue={story.text} onChange={setText} preview={false}></MdEditor>
+              {storyMessages[story.id] && (
+                <div
+                  className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("success")
+                    ? "bg-green-50 text-green-800"
+                    : "bg-red-50 text-red-800"
+                    }`}
+                  role="alert"
+                >
+                  <span>{storyMessages[story.id]}</span>
+                </div>
+              )}
               <div className='flex justify-evenly'>
                 <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4'>Delete Story</Button>
                 <Button onClick={() => updateStory(story.id)} className='m-4'>Update Story</Button>
@@ -132,5 +160,4 @@ export default function profileStories({ id }: { id: string | undefined }) {
       </div>
     </div >
   );
-
 }

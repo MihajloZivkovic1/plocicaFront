@@ -31,8 +31,6 @@ export default async function ActivatePage({ params }: { params: { qrCode: strin
 
   return (
     <div>
-      <h1 className='uppercase text-lg'>Activation Page</h1>
-      <h1>QR Code: {qrCode}</h1>
       <ActivationForm qrCode={qrCode} ></ActivationForm>
     </div>
   )

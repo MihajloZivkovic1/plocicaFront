@@ -4,7 +4,7 @@ import { MdEditor, MdPreview } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import 'md-editor-rt/lib/preview.css';
 import { Button } from '@/components/ui/button'
-
+import { MessageAlert } from "@/components/ui/MessageAlert";
 
 
 
@@ -48,7 +48,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
     <>
       <MdEditor modelValue={text} onChange={setText}></MdEditor>
       <Button onClick={handleSave} className='m-5'>Save Biography</Button>
-      {successMessage && <p>{successMessage}</p>}
+      <MessageAlert type="success" message={successMessage} />
     </>
   );
 }

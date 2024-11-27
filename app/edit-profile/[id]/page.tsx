@@ -67,7 +67,7 @@ export default function EditProfile() {
 
   return (
     <div>
-      <nav className="p-5">
+      <nav className="p-5 mt-16">
         <Link href={`/edit-profile/${id}?tab=general`} className="p-1">
           <span className={tab === 'general' ? 'text-blue-500' : ''}>General</span>
         </Link>

@@ -22,8 +22,8 @@ import { Button } from "@/components/ui/button"
 
 export function FrequentQuestions() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32">
-      <div className="container px-4 grid gap-4 md:gap-6">
+    <section className="w-full py-12 ">
+      <div className="container px-4 grid gap-4 md:gap-6 justify-center">
         <div className="space-y-2">
           <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">FAQ</h2>
           <p className="text-gray-500 md:text-xl/relaxed dark:text-gray-400">

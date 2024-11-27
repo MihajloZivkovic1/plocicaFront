@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { JSX, SVGProps } from "react";
 import { NextResponse } from "next/server";
+import { QrCode, QrCodeIcon } from "lucide-react";
 
 
 export function Navbar({ session, logout }: NavbarProps) {
@@ -19,17 +20,18 @@ export function Navbar({ session, logout }: NavbarProps) {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  const classNameForLinks = "font-medium text-sm transition-colors hover:underline text-gray-800 dark:text-gray-200"
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-14 items-center">
+        <div className="flex justify-between min-h-[56px] items-center gap-4">
           {/* Logo */}
-          <Link href="/dashboard" className="flex items-center" prefetch={false}>
-            <MountainIcon className="h-6 w-6" />
-            <span className="sr-only">Acme Inc</span>
+          <Link href={"/"}>
+            <h1 className="font-black">MemoryPlate</h1>
           </Link>
-
+          <Link href="/dashboard" className="flex items-center" prefetch={false}>
+            <QrCodeIcon className="h-6 w-6" />
+          </Link>
           {/* Mobile menu toggle button */}
           <button onClick={toggleMenu} className="md:hidden text-gray-800 dark:text-gray-200 focus:outline-none">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -39,9 +41,11 @@ export function Navbar({ session, logout }: NavbarProps) {
 
           {/* Desktop Menu */}
           <nav className="hidden md:flex gap-4">
-            <NavLink href="/" label="Home" />
-            <NavLink href="/contact" label="Contact" />
-            <NavLink href="/dashboard" label="Dashboard" />
+            <NavLink href="/" label="Home" className={classNameForLinks} />
+            <NavLink href="/contact" label="Contact" className={classNameForLinks} />
+            <NavLink href="/dashboard" label="Dashboard" className={classNameForLinks} />
+            <NavLink href="/order-now" label="Order Now" className={classNameForLinks} />
+
           </nav>
           {/* Desktop Menu */}
           {/* <nav className="hidden md:flex gap-4">
@@ -53,11 +57,11 @@ export function Navbar({ session, logout }: NavbarProps) {
           {/* Sign-in button */}
           <div className="flex items-center gap-4">
             {isLoggedIn ? (
-              <Link href="/login" onClick={() => { logout() }}>
-                <Button variant="outline" size="sm">
+              <form action="/api/auth/logout" method="POST">
+                <Button type="submit" variant="outline" size="sm">
                   Logout
                 </Button>
-              </Link>
+              </form>
             ) : (
               <Link href="/login">
                 <Button variant="outline" size="sm">
@@ -79,9 +83,11 @@ export function Navbar({ session, logout }: NavbarProps) {
               </svg>
             </button>
             <nav className="flex flex-col space-y-4">
-              <NavLink href="/" label="Home" onClick={toggleMenu} />
-              <NavLink href="/contact" label="Contact" onClick={toggleMenu} />
-              <NavLink href="/dashboard" label="Dashboard" onClick={toggleMenu} />
+              <NavLink href="/" label="Home" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/contact" label="Contact" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/dashboard" label="Dashboard" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/order-now" label="Order Now" onClick={toggleMenu} className={classNameForLinks} />
+
               <div>{isLoggedIn ? (
                 < Link href="/login" onClick={logout}>
                   <Button variant="outline" size="sm" onClick={toggleMenu}>
@@ -110,6 +116,7 @@ interface NavLinkProps {
   href: string;
   label: string;
   onClick?: () => void;
+  className: string;
 }
 interface NavbarProps {
   session: {
@@ -123,13 +130,13 @@ interface NavbarProps {
     }
   } | null, logout: () => Promise<NextResponse> | null,
 }
-const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick }) => (
-  <Link href={href} onClick={onClick} className="font-medium text-sm transition-colors hover:underline text-gray-800 dark:text-gray-200">
+const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick, className }) => (
+  <Link href={href} onClick={onClick} className={className}>
     {label}
-  </Link>
+  </Link >
 );
 
-function MountainIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+function QRCodeIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -138,12 +145,15 @@ function MountainIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) 
       height="24"
       viewBox="0 0 24 24"
       fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
     >
-      <path d="m8 3 4 8 5-5 5 15H2L8 3z" />
+      <rect x="2" y="2" width="8" height="8" fill="black" />
+      <rect x="4" y="4" width="4" height="4" fill="white" />
+      <rect x="2" y="14" width="8" height="8" fill="black" />
+      <rect x="4" y="16" width="4" height="4" fill="white" />
+      <rect x="14" y="2" width="8" height="8" fill="black" />
+      <rect x="16" y="4" width="4" height="4" fill="white" />
+      <rect x="10" y="10" width="4" height="4" fill="black" />
+      <rect x="16" y="16" width="2" height="2" fill="black" />
     </svg>
   );
 }

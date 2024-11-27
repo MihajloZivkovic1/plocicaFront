@@ -109,3 +109,8 @@ body {
   word-break: break-word;
   /* Ensure words break in list items */
 }
+
+.margin-left-40 {
+  margin-left: 40px;
+  max-width: 80%;
+}

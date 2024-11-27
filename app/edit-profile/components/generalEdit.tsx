@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea'
+import { MessageAlert } from "@/components/ui/MessageAlert";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 type Profile = {
   profile: {
@@ -289,16 +290,8 @@ export default function GeneralEdit({ id }: { id: string }) {
         <div className=''>
           <Button type='submit'>Save Changes</Button>
         </div>
-        {successMessage && (
-          <div className="bg-green-100 text-green-700 p-3 rounded">
-            {successMessage}
-          </div>
-        )}
-        {errorMessage && (
-          <div className="bg-red-100 text-red-700 p-3 rounded">
-            {errorMessage}
-          </div>
-        )}
+        <MessageAlert type="success" message={successMessage} />
+        <MessageAlert type="error" message={errorMessage} />
       </form>
     </div>
   );

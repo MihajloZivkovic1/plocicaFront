@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Navbar } from "../navbar";
 
 import { getSession, logout } from "../../lib";
+import { Toaster } from "@/components/ui/toaster"
 
 export const DefaultLayout = async ({
   children
@@ -12,9 +13,10 @@ export const DefaultLayout = async ({
 
   return <>
     <Navbar session={session} logout={logout}></Navbar>
-    <div className="pt-16">
+    <div className="">
 
       {children}
+      <Toaster />
     </div>
   </>
 }

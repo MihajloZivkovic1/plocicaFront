@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
-
+import { MessageAlert } from '@/components/ui/MessageAlert'
 export default function profileEvents({ id }: { id: string | undefined }) {
   const [events, setEvents] = useState<any[]>([]);
 
@@ -10,6 +10,9 @@ export default function profileEvents({ id }: { id: string | undefined }) {
   const [location, setLocation] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
+
+  const [successMessage, setSuccessMessage] = useState("");
+
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -28,7 +31,7 @@ export default function profileEvents({ id }: { id: string | undefined }) {
         }
 
       } catch (error) {
-        console.error("Error fetching stories", error);
+        console.error("Error fetching events", error);
       }
     }
     fetchEvents();
@@ -58,6 +61,8 @@ export default function profileEvents({ id }: { id: string | undefined }) {
       console.log("new event", newEvent);
       setEvents((prevEvents) => [...prevEvents, newEvent.event])
 
+      setSuccessMessage("");
+
     } catch (error) {
       console.error("Error creating event", error);
     }
@@ -74,7 +79,6 @@ export default function profileEvents({ id }: { id: string | undefined }) {
       if (response.ok) {
         setEvents((prevEvents) => prevEvents.filter((event) => event.id !== eventId))
         console.log("Event deleted succesfully");
-
       }
       else {
         console.error("Failed to delete event");
@@ -97,10 +101,10 @@ export default function profileEvents({ id }: { id: string | undefined }) {
           timeOfEvent: time
         })
       })
+      const newEvent = await response.json();
 
-      const newStory = await response.json();
-      console.log(newStory);
       if (response.ok) {
+        setSuccessMessage(newEvent.message)
         console.log("Event updated succesfully");
       }
       else {
@@ -152,13 +156,12 @@ export default function profileEvents({ id }: { id: string | undefined }) {
                 <div className='flex justify-evenly'>
                   <Button onClick={() => deleteEvent(event.id)} variant={"destructive"} className='m-4'>Obrisi Dogadjaj</Button>
                   <Button onClick={() => updateEvent(event.id)} variant={"secondary"} className='m-4'>Potvrdi izmenu Dogadjaja</Button>
-
-
                 </div>
               </div>
             ))
           )}
         </div>
+        <MessageAlert type="success" message={successMessage} />
       </div >
 
     </div>

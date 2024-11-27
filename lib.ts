@@ -3,7 +3,9 @@ import { SignJWT, jwtVerify } from "jose";
 import { redirect } from "next/dist/server/api-utils";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import CryptoJS from "crypto-js"
 
+const SECRET_KEY = "secretKey123";
 const secretKey = "secret";
 const key = new TextEncoder().encode(secretKey);
 
@@ -22,30 +24,36 @@ export async function decrypt(input: string): Promise<any> {
   return payload;
 }
 
-export async function login(formData: FormData) {
-  const email = formData.get('email');
-  const password = formData.get('password');
+export async function login(credentials: { email: string; password: string }) {
 
+  console.log("Credentials", credentials);
+  const encryptedPayload = CryptoJS.AES.encrypt(
+    JSON.stringify(credentials),
+    SECRET_KEY
+  ).toString();
+  console.log("Ecnrypted Payload", encryptedPayload);
   const res = await fetch('http://localhost:3000/users/login', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
-  })
+    body: JSON.stringify({ data: encryptedPayload }),
+
+  });
 
   if (!res.ok) {
-    throw new Error("invalid credentials")
+    const errorData = await res.json(); // Parse the error response from the server
+    throw new Error(errorData.error || "Unexpected error");
   }
 
-
   const user = await res.json();
-  const expires = new Date(Date.now() + 60 * 60 * 1000);
+  console.log("User:", user);
+  const expires = new Date(Date.now() + 60 * 60 * 1000); // 1 hour expiration
   const session = await encrypt({ user, expires });
-
 
   (await cookies()).set("session", session, { expires, httpOnly: true });
 }
+
 
 export async function logout() {
   (await cookies()).set("session", "", { expires: new Date(0) });
