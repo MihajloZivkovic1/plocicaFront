@@ -4,5 +4,5 @@ import { NextResponse } from 'next/server';
 
 export async function POST() {
   (await cookies()).set('session', '', { expires: new Date(0) });
-  return NextResponse.redirect('http://localhost:3001/login');
+  return NextResponse.redirect('https://plocica-front.vercel.app/login');
 }
