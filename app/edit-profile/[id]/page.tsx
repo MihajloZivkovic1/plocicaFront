@@ -15,7 +15,7 @@ type Profile = {
 
 
 async function fetchUserProfiles(userId: number) {
-  const response = await fetch(`http://localhost:3000/users/getUsersProfiles/${userId}`);
+  const response = await fetch(`https://plocicaapi.onrender.com/users/getUsersProfiles/${userId}`);
   if (!response.ok) throw new Error("Failed to fetch profiles");
   return response.json();
 }

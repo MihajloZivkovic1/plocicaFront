@@ -30,7 +30,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/events/${id}`);
+        const response = await fetch(`https://plocicaapi.onrender.comevents/${id}`);
         const data = await response.json();
 
 
@@ -52,7 +52,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
   const addNewEvent = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/events/create/${id}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/events/create/${id}`, {
         method: "POST",
         headers: {
           'Content-type': 'application/json'
@@ -83,7 +83,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   };
   const deleteEvent = async (eventId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.comevents/${eventId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventId: eventId })
@@ -103,7 +103,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   }
   const updateEvent = async (eventId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.comevents/${eventId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

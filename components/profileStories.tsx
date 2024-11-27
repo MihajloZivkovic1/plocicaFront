@@ -23,7 +23,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
   useEffect(() => {
     const fetchStories = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/stories/${id}`)
+        const response = await fetch(`https://plocicaapi.onrender.com/stories/${id}`)
         const data = await response.json();
         console.log(data);
         const storiesArray = data.stories
@@ -37,7 +37,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const addNewStory = async () => {
     try {
-      const response = await fetch(`http://localhost:3000/stories/create/${id}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/stories/create/${id}`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const deleteStory = async (storyId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/stories/${storyId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/stories/${storyId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ storyId: storyId })
@@ -84,7 +84,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
   //da li je title promenjen ili text promenjen dozvoliti dugme update
   const updateStory = async (storyId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/stories/${storyId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/stories/${storyId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -29,7 +29,7 @@ interface Event {
 }
 
 async function fetchProfileData(qrCode: string) {
-  const res = await fetch(`http://localhost:3000/profiles/${qrCode}`)
+  const res = await fetch(`https://plocicaapi.onrender.com/profiles/${qrCode}`)
   if (!res.ok) {
     throw new Error('Failed to fetch profile data')
   }

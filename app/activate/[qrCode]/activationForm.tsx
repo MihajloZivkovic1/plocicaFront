@@ -33,7 +33,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
     };
 
     try {
-      const response = await fetch(`http://localhost:3000/users/activate/${qrCode}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/users/activate/${qrCode}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
         setSuccessMessage('Profile activated successfully! Redirecting...');
         setErrorMessage('');
 
-        const profileResponse = await fetch(`http://localhost:3000/profiles/${qrCode}`);
+        const profileResponse = await fetch(`https://plocicaapi.onrender.com/profiles/${qrCode}`);
         const profile = await profileResponse.json();
 
         const id = profile.profile?.id;

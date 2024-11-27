@@ -14,7 +14,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
   useEffect(() => {
     const fetchMedia = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/media/${id}`);
+        const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`);
         const data = await response.json();
         const mediaArray = data.media;
         if (Array.isArray(mediaArray)) {
@@ -31,7 +31,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
 
   const deleteMedia = async (mediaId: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/media/${mediaId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/media/${mediaId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mediaId: mediaId })
@@ -58,7 +58,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
       formData.append('profileId', id);
       formData.append('mediaType', "photo")
       try {
-        const response = await fetch(`http://localhost:3000/media/${id}`, {
+        const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`, {
           method: 'POST',
           body: formData,
         });

@@ -15,7 +15,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
   useEffect(() => {
     const fetchBio = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/profiles/profile/${id}`);
+        const response = await fetch(`https://plocicaapi.onrender.com/profiles/profile/${id}`);
         const data = await response.json();
         if (data && data.profile.bio) {
           setText(data.profile.bio);
@@ -30,7 +30,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
 
   const handleSave = async () => {
     try {
-      await fetch(`http://localhost:3000/profiles/edit/bio/${id}`, {
+      await fetch(`https://plocicaapi.onrender.com/profiles/edit/bio/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },

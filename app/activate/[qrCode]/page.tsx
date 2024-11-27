@@ -3,7 +3,7 @@ import ActivationForm from './activationForm';
 import { permanentRedirect } from 'next/navigation';
 
 async function fetchProductData(qrCode: string) {
-  const res = await fetch(`http://localhost:3000/products/${qrCode}`);
+  const res = await fetch(`https://plocicaapi.onrender.com/products/${qrCode}`);
 
   if (!res.ok) {
     throw new Error('Failed to fetch product data');

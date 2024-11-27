@@ -32,7 +32,7 @@ export async function login(credentials: { email: string; password: string }) {
     SECRET_KEY
   ).toString();
   console.log("Ecnrypted Payload", encryptedPayload);
-  const res = await fetch('http://localhost:3000/users/login', {
+  const res = await fetch('https://plocicaapi.onrender.com/users/login', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export async function login(credentials: { email: string; password: string }) {
 
 export async function logout() {
   (await cookies()).set("session", "", { expires: new Date(0) });
-  return NextResponse.redirect('http://localhost:3001/login');
+  return NextResponse.redirect('https://plocica-front.vercel.app/login');
 }
 
 export async function getSession() {

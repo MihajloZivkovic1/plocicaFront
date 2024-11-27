@@ -44,7 +44,7 @@ export default function GeneralEdit({ id }: { id: string }) {
   })
   useEffect(() => {
     async function fetchProfile() {
-      const res = await fetch(`http://localhost:3000/profiles/profile/${id}`);
+      const res = await fetch(`https://plocicaapi.onrender.comprofiles/profile/${id}`);
       const data = await res.json();
       setProfile(data);
       const newImageUrl = data.profile.photo;
@@ -153,7 +153,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         formDataToSend.append('profileImage', photoFile);
       }
 
-      const response = await fetch(`http://localhost:3000/profiles/edit/${id}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/${id}`, {
         method: 'PUT',
         body: formDataToSend,
       });
