@@ -10,7 +10,7 @@ export function MessageAlert({ type, message }) {
 
   return (
     <div
-      className={`p-4 mb-4 text-sm rounded-lg ${alertStyles[type]}`}
+      className={`p-6 mb-6 text-sm rounded-lg ${alertStyles[type]}`}
       role="alert"
     >
       <span className="font-medium">{message}</span>
