@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { MessageAlert } from '@/components/ui/MessageAlert'
+import { Trash2 } from 'lucide-react';
 
 
 interface Event {
@@ -166,9 +167,17 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
                   className="m-4 w-300"
                   onChange={(e) => setTime(e.target.value)}
                 />
-                <div className='flex justify-evenly'>
-                  <Button onClick={() => deleteEvent(event.id)} variant={"destructive"} className='m-4'>Obrisi Dogadjaj</Button>
-                  <Button onClick={() => updateEvent(event.id)} >Potvrdi izmenu</Button>
+                <div className='flex justify-end space-x-2 mt-2'>
+                  <Button
+                    onClick={() => deleteEvent(event.id)}
+                    variant="ghost"
+                    size="icon"
+                    className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                  >
+                    <Trash2 className="h-5 w-5" />
+                    <span className="sr-only">Delete event</span>
+                  </Button>
+                  <Button onClick={() => updateEvent(event.id)}>Potvrdi izmenu</Button>
                 </div>
               </div>
             ))
