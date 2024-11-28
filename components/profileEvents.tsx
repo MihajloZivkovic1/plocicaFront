@@ -10,7 +10,7 @@ interface Event {
   title: string;
   location: string;
   dateOfEvent: Date;
-  timeOfEvent: string;
+  timeOfEvent: Date;
 }
 
 
@@ -32,7 +32,10 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       try {
         const response = await fetch(`https://plocicaapi.onrender.com/events/${id}`);
         const data = await response.json();
+
+
         const eventsArray = data;
+
         if (Array.isArray(data)) {
           setEvents(eventsArray);
         }
@@ -59,7 +62,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           title: 'Title of Event',
           location: 'Location of Event',
           dateOfEvent: new Date(),
-          timeOfEvent: new Date().toTimeString().split(' ')[0]
+          timeOfEvent: ""
         })
       });
 
