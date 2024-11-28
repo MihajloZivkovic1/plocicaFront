@@ -145,7 +145,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">Your Email</Label>
               <Input
                 type="email"
                 id="email"
@@ -156,7 +156,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">Your Password</Label>
               <Input
                 type="password"
                 id="password"

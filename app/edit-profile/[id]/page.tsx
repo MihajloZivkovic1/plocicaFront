@@ -1,4 +1,5 @@
-"use client"
+'use client'
+
 import { useEffect, useState } from "react";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
@@ -10,22 +11,21 @@ import MediaEdit from "../components/mediaEdit";
 
 type Profile = {
   id: number;
-
 };
-
 
 async function fetchUserProfiles(userId: number) {
   const response = await fetch(`https://plocicaapi.onrender.com/users/getUsersProfiles/${userId}`);
   if (!response.ok) throw new Error("Failed to fetch profiles");
   return response.json();
 }
-//iz sesije izvuci profile id i ne jesti govna
+
 async function fetchUserId() {
   const res = await fetch('/api/auth/getSession');
   if (!res.ok) throw new Error('Not authenticated');
   const data = await res.json();
   return data.userId;
 }
+
 export default function EditProfile() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -34,8 +34,6 @@ export default function EditProfile() {
   const [tab, setTab] = useState<string>('');
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
 
-
-
   useEffect(() => {
     const pathParts = pathname.split('/');
     const profileId = pathParts[pathParts.length - 1];
@@ -43,12 +41,9 @@ export default function EditProfile() {
 
     const verifyAuthorization = async () => {
       try {
-
         const userId = await fetchUserId();
-
         const userProfiles = await fetchUserProfiles(userId);
         const profileIds = userProfiles.map((profile: Profile) => profile.id.toString());
-
 
         if (profileIds.includes(profileId)) {
           setIsAuthorized(true);
@@ -71,30 +66,40 @@ export default function EditProfile() {
 
   if (!isAuthorized) return null;
 
+  const tabs = [
+    { name: 'General', value: 'general' },
+    { name: 'Bio', value: 'bio' },
+    { name: 'Events', value: 'events' },
+    { name: 'Stories', value: 'stories' },
+    { name: 'Media', value: 'media' },
+  ];
+
   return (
-    <div>
-      <nav className="p-5 mt-16">
-        <Link href={`/edit-profile/${id}?tab=general`} className="p-1">
-          <span className={tab === 'general' ? 'text-blue-500' : ''}>General</span>
-        </Link>
-        <Link href={`/edit-profile/${id}?tab=bio`} className="p-5">
-          <span className={tab === 'bio' ? 'text-blue-500' : ''}>Bio</span>
-        </Link>
-        <Link href={`/edit-profile/${id}?tab=events`} className="p-5">
-          <span className={tab === 'events' ? 'text-blue-500' : ''}>Events</span>
-        </Link>
-        <Link href={`/edit-profile/${id}?tab=stories`} className="p-5">
-          <span className={tab === 'stories' ? 'text-blue-500' : ''}>Stories</span>
-        </Link>
-        <Link href={`/edit-profile/${id}?tab=media`} className="p-5">
-          <span className={tab === 'media' ? 'text-blue-500' : ''}>Media</span>
-        </Link>
+    <div className="container mx-auto px-4 mt-16">
+      <nav className="overflow-x-auto whitespace-nowrap pb-2 mb-4">
+        <div className="inline-flex space-x-2">
+          {tabs.map((item) => (
+            <Link
+              key={item.value}
+              href={`/edit-profile/${id}?tab=${item.value}`}
+              className={`px-3 py-2 rounded-md text-sm font-medium ${tab === item.value
+                ? 'bg-blue-500 text-white'
+                : 'text-gray-700 hover:bg-gray-100'
+                } transition-colors duration-200`}
+            >
+              {item.name}
+            </Link>
+          ))}
+        </div>
       </nav>
-      {tab === 'general' && <div><GeneralEdit id={id} /></div>}
-      {tab === 'bio' && <div><BioEdit id={id} /></div>}
-      {tab === 'events' && <div><EventsEdit id={id} /></div>}
-      {tab === 'stories' && <div><StoriesEdit id={id} /></div>}
-      {tab === 'media' && <div><MediaEdit id={id} /></div>}
+      <div className="mt-4">
+        {tab === 'general' && <GeneralEdit id={id} />}
+        {tab === 'bio' && <BioEdit id={id} />}
+        {tab === 'events' && <EventsEdit id={id} />}
+        {tab === 'stories' && <StoriesEdit id={id} />}
+        {tab === 'media' && <MediaEdit id={id} />}
+      </div>
     </div>
   );
 }
+
