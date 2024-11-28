@@ -245,15 +245,15 @@ export default function GeneralEdit({ id }: { id: string }) {
     <div className="flex flex-col items-center h-screen p-5">
       <form onSubmit={handleSaveChanges} className="grid gap-6 mb-6 w-full grid-cols-1 ">
         <div className="flex items-center">
-          <Avatar>
+          <Avatar >
             <AvatarImage src={previewImage ?? 'default-image-url.jpg'} alt="User profile photo" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
           <div className="ml-4 space-x-2">
-            <Button onClick={handleButtonClick} type='button'>
+            <Button onClick={handleButtonClick} type='button' className='mt-4'>
               Upload image
             </Button>
-            <Button onClick={handleSaveImage} type='button' variant="outline">
+            <Button onClick={handleSaveImage} type='button' variant="outline" className='mt-4'>
               Save image
             </Button>
           </div>
