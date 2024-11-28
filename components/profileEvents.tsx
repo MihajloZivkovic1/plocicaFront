@@ -11,7 +11,7 @@ interface Event {
   title: string;
   location: string;
   dateOfEvent: Date;
-  timeOfEvent: Date;
+  timeOfEvent: string;
 }
 
 
@@ -104,6 +104,9 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   }
   const updateEvent = async (eventId: string) => {
     try {
+
+      const formattedTime = time.includes(":") && time.split(":").length === 2 ? `${time}:00` : time;
+
       const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
@@ -112,7 +115,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           title: title,
           location: location,
           dateOfEvent: date,
-          timeOfEvent: time
+          timeOfEvent: formattedTime
         })
       })
       const newEvent = await response.json();
@@ -163,11 +166,11 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
                 />
                 <Input
                   type="time"
-                  defaultValue={event.timeOfEvent ? event.timeOfEvent.toString() : ""}
+                  defaultValue={event.timeOfEvent ? event.timeOfEvent.slice(0, 5) : ""} // Extract 'HH:mm'
                   className="m-4 w-300"
                   onChange={(e) => setTime(e.target.value)}
                 />
-                <div className='flex justify-end space-x-2 mt-2'>
+                <div className='flex justify-end space-x-2 mt-2 p-5'>
                   <Button
                     onClick={() => deleteEvent(event.id)}
                     variant="ghost"
