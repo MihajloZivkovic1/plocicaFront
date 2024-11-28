@@ -30,7 +30,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch(`https://plocicaapi.onrender.comevents/${id}`);
+        const response = await fetch(`https://plocicaapi.onrender.com/events/${id}`);
         const data = await response.json();
 
 
@@ -83,7 +83,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   };
   const deleteEvent = async (eventId: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.comevents/${eventId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventId: eventId })
@@ -103,7 +103,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   }
   const updateEvent = async (eventId: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.comevents/${eventId}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
