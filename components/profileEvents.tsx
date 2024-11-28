@@ -168,7 +168,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
                 />
                 <div className='flex justify-evenly'>
                   <Button onClick={() => deleteEvent(event.id)} variant={"destructive"} className='m-4'>Obrisi Dogadjaj</Button>
-                  <Button onClick={() => updateEvent(event.id)} className='m-4'>Potvrdi izmenu</Button>
+                  <Button onClick={() => updateEvent(event.id)} >Potvrdi izmenu</Button>
                 </div>
               </div>
             ))
