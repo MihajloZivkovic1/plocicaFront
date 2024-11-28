@@ -46,7 +46,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
 
   return (
     <>
-      <MdEditor modelValue={text} onChange={setText}></MdEditor>
+      <MdEditor preview={false} modelValue={text} onChange={setText} style={{ height: '400px' }}></MdEditor>
       <Button onClick={handleSave} className='m-5'>Save Biography</Button>
       <MessageAlert type="success" message={successMessage} />
     </>

@@ -140,7 +140,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
                 className="m-4 w-300"
                 onChange={(e) => setTitle(e.target.value)} // Capture title changes
               />
-              <MdEditor modelValue={story.text} onChange={setText} preview={false}></MdEditor>
+              <MdEditor modelValue={story.text} onChange={setText} preview={false} style={{ height: '350px' }}></MdEditor>
               {storyMessages[story.id] && (
                 <div
                   className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("success")

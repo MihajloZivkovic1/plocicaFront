@@ -26,7 +26,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   const [time, setTime] = useState("");
 
   const [successMessage, setSuccessMessage] = useState("");
-
+  console.log(time);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -106,7 +106,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
     try {
 
       const formattedTime = time.includes(":") && time.split(":").length === 2 ? `${time}:00` : time;
-
+      console.log("TIME", time);
       const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
@@ -115,7 +115,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           title: title,
           location: location,
           dateOfEvent: date,
-          timeOfEvent: formattedTime
+          timeOfEvent: formattedTime.toString()
         })
       })
       const newEvent = await response.json();

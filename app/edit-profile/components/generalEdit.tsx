@@ -3,6 +3,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { MessageAlert } from "@/components/ui/MessageAlert";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { useToast } from '@/hooks/use-toast';
+import { Toaster } from "@/components/ui/toaster"
+
+
 type Profile = {
   profile: {
     profileName: string;
@@ -18,6 +22,8 @@ type Profile = {
 
 
 export default function GeneralEdit({ id }: { id: string }) {
+  const { toast } = useToast()
+
   const [profile, setProfile] = useState<Profile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
@@ -131,11 +137,14 @@ export default function GeneralEdit({ id }: { id: string }) {
 
 
   const handleSaveChanges = async (e: React.FormEvent) => {
-    setSuccessMessage("");
     e.preventDefault();
 
     if (!validateForm()) {
-      setErrorMessage("Failed to update profile, please try again");
+      toast({
+        title: "Error",
+        description: "Failed to update profile, please try again",
+        variant: "destructive",
+      })
       return;
     }
 
@@ -147,7 +156,6 @@ export default function GeneralEdit({ id }: { id: string }) {
       formDataToSend.append('religion', formData.religion);
       formDataToSend.append('placeOfBirth', formData.placeOfBirth);
       formDataToSend.append('placeOfDeath', formData.placeOfDeath);
-      // formDataToSend.append('text', formData.text);
 
       if (photoFile) {
         formDataToSend.append('profileImage', photoFile);
@@ -161,19 +169,66 @@ export default function GeneralEdit({ id }: { id: string }) {
       if (!response.ok) {
         throw new Error('Failed to update profile');
       }
-      setSuccessMessage("Profile updated successfully!");
-      setErrorMessage("");
+
+      toast({
+        title: "Success",
+        description: "Profile updated successfully!",
+      })
       setErrors({ profileName: "", dateOfBirth: "", dateOfDeath: "", text: "" });
 
     } catch (error: unknown) {
       if (error instanceof Error) {
         console.error('Error updating profile:', error.message);
-        setErrorMessage(error.message);
+        toast({
+          title: "Error",
+          description: error.message,
+          variant: "destructive",
+        })
       } else {
         console.error('Unexpected error:', error);
-        setErrorMessage('An unexpected error occurred.');
+        toast({
+          title: "Error",
+          description: "An unexpected error occurred.",
+          variant: "destructive",
+        })
       }
-      setSuccessMessage("");
+    }
+  };
+
+  const handleSaveImage = async () => {
+    if (!photoFile) {
+      toast({
+        title: "Error",
+        description: "No image selected",
+        variant: "destructive",
+      })
+      return;
+    }
+
+    try {
+      const formData = new FormData();
+      formData.append('profileImage', photoFile);
+
+      const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/${id}`, {
+        method: 'PUT',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile image');
+      }
+
+      toast({
+        title: "Success",
+        description: "Profile image updated successfully!",
+      })
+    } catch (error) {
+      console.error('Error updating profile image:', error);
+      toast({
+        title: "Error",
+        description: "Failed to update profile image",
+        variant: "destructive",
+      })
     }
   };
 
@@ -190,17 +245,21 @@ export default function GeneralEdit({ id }: { id: string }) {
 
 
   return (
-
     <div className="flex flex-col items-center h-screen p-5">
       <form onSubmit={handleSaveChanges} className="grid gap-6 mb-6 w-full grid-cols-1 ">
-        <div className="flex">
+        <div className="flex items-center">
           <Avatar>
             <AvatarImage src={previewImage ?? 'default-image-url.jpg'} alt="User profile photo" />
             <AvatarFallback>CN</AvatarFallback>
           </Avatar>
-          <Button className="m-7" onClick={handleButtonClick} type='button'>
-            Upload image
-          </Button>
+          <div className="ml-4 space-x-2">
+            <Button onClick={handleButtonClick} type='button'>
+              Upload image
+            </Button>
+            <Button onClick={handleSaveImage} type='button' variant="outline">
+              Save image
+            </Button>
+          </div>
           <input
             type="file"
             name='profilePhoto'
@@ -282,9 +341,10 @@ export default function GeneralEdit({ id }: { id: string }) {
         <div className=''>
           <Button type='submit'>Save Changes</Button>
         </div>
-        <MessageAlert type="success" message={successMessage} />
-        <MessageAlert type="error" message={errorMessage} />
+        {/* <MessageAlert type="success" message={successMessage} />
+        <MessageAlert type="error" message={errorMessage} /> */}
       </form>
+      <Toaster />
     </div>
   );
 }
