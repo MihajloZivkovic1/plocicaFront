@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { MessageAlert } from "@/components/ui/MessageAlert";
+
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { useToast } from '@/hooks/use-toast';
 import { Toaster } from "@/components/ui/toaster"
@@ -35,9 +35,6 @@ export default function GeneralEdit({ id }: { id: string }) {
     text: "",
   });
 
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     profileName: '',
@@ -341,8 +338,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         <div className=''>
           <Button type='submit'>Save Changes</Button>
         </div>
-        {/* <MessageAlert type="success" message={successMessage} />
-        <MessageAlert type="error" message={errorMessage} /> */}
+
       </form>
       <Toaster />
     </div>
