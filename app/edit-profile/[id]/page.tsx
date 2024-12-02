@@ -67,11 +67,11 @@ export default function EditProfile() {
   if (!isAuthorized) return null;
 
   const tabs = [
-    { name: 'General', value: 'general' },
-    { name: 'Bio', value: 'bio' },
-    { name: 'Events', value: 'events' },
-    { name: 'Stories', value: 'stories' },
-    { name: 'Media', value: 'media' },
+    { name: 'Generalno', value: 'general' },
+    { name: 'Biografija', value: 'bio' },
+    { name: 'Pomeni', value: 'events' },
+    { name: 'Priče', value: 'stories' },
+    { name: 'Slike', value: 'media' },
   ];
 
   return (

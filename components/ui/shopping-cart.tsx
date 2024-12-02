@@ -56,20 +56,20 @@ export function ShoppingCart() {
       <div className="grid gap-4">
         <Card>
           <CardHeader>
-            <CardTitle>Order Summary</CardTitle>
+            <CardTitle>Ukupna Suma</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-4">
             <div className="flex items-center justify-between">
-              <span>Subtotal</span>
+              <span>Total</span>
               <span className="font-medium">4950.00</span>
             </div>
             <div className="flex items-center justify-between">
-              <span>Shipping</span>
+              <span>Isporuka</span>
               <span className="font-medium">0.00</span>
             </div>
             <Separator />
             <div className="flex items-center justify-between font-medium text-lg">
-              <span>Total</span>
+              <span>Ukupno</span>
               <span>4950.00</span>
             </div>
           </CardContent>

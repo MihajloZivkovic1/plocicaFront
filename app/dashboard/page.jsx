@@ -15,7 +15,7 @@ export default async function Dashboard() {
       <div className="flex items-center justify-center h-screen">
         <Card>
           <CardContent className="pt-6">
-            <p className="text-center text-gray-600">User not logged in.</p>
+            <p className="text-center text-gray-600">Korisnik nije ulogovan</p>
           </CardContent>
         </Card>
       </div>
@@ -27,7 +27,7 @@ export default async function Dashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mt-8 p-4 text-center">Your Profiles</h1>
+      <h1 className="text-3xl font-bold mt-8 p-4 text-center">Vaše Pločice</h1>
       {profiles.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {profiles.map(profile => {
@@ -60,13 +60,13 @@ export default async function Dashboard() {
                   <Link href={`/profiles/${profile.qrCode}`} className="w-full">
                     <Button variant="outline" className="w-full">
                       <EyeIcon className="w-4 h-4 mr-2" />
-                      View Profile
+                      Pogledajte Profil
                     </Button>
                   </Link>
                   <Link href={`/edit-profile/${profile.id}?tab=general`} className="w-full">
                     <Button variant="default" className="w-full">
                       <PencilIcon className="w-4 h-4 mr-2" />
-                      Edit Profile
+                      Uredite Profil
                     </Button>
                   </Link>
                 </CardFooter>
@@ -77,7 +77,7 @@ export default async function Dashboard() {
       ) : (
         <Card>
           <CardContent className="pt-6">
-            <p className="text-center text-gray-600">No profiles found for this user.</p>
+            <p className="text-center text-gray-600">Korisnik nema ni jedan profil</p>
           </CardContent>
         </Card>
       )}

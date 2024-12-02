@@ -127,7 +127,7 @@ export default function OrderNow() {
         </p>
         <div>
           <label htmlFor="country" className="block text-sm font-medium text-gray-700">
-            Country
+            Država
           </label>
           <Select
             onValueChange={handleCountryChange}
@@ -148,7 +148,7 @@ export default function OrderNow() {
         </div>
       </fieldset>
       <fieldset id="contact-fields" className="mb-6">
-        <legend className="sr-only">Contact Information</legend>
+        <legend className="sr-only">Kontakt informacije</legend>
         <h2 className="text-lg font-semibold mb-2">Kontakt informacije</h2>
         <p className="text-sm text-gray-500 mb-4">
           Vašu email adresu ćemo koristiti da vam pošaljem email o potvrdi kupovine.
@@ -173,7 +173,7 @@ export default function OrderNow() {
         <p className="text-sm text-gray-500 mb-4">Unesite adresu za isporuku</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label htmlFor="billing-firstName" className="block text-sm font-medium text-gray-700">First name</label>
+            <label htmlFor="billing-firstName" className="block text-sm font-medium text-gray-700">Vaše ime</label>
             <Input
               id="billing-firstName"
               type="text"
@@ -186,7 +186,7 @@ export default function OrderNow() {
             {errors.firstName && <p className="mt-1 text-sm text-red-600">{errors.firstName}</p>}
           </div>
           <div>
-            <label htmlFor="billing-lastName" className="block text-sm font-medium text-gray-700">Last name</label>
+            <label htmlFor="billing-lastName" className="block text-sm font-medium text-gray-700">Vaše prezime</label>
             <Input
               id="billing-lastName"
               type="text"
@@ -199,7 +199,7 @@ export default function OrderNow() {
             {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
           </div>
           <div className="col-span-2">
-            <label htmlFor="billing-address" className="block text-sm font-medium text-gray-700">Address</label>
+            <label htmlFor="billing-address" className="block text-sm font-medium text-gray-700">Adresa</label>
             <Input
               id="billing-address"
               type="text"
@@ -212,7 +212,7 @@ export default function OrderNow() {
             {errors.address && <p className="mt-1 text-sm text-red-600">{errors.address}</p>}
           </div>
           <div>
-            <label htmlFor="billing-city" className="block text-sm font-medium text-gray-700">City</label>
+            <label htmlFor="billing-city" className="block text-sm font-medium text-gray-700">Grad</label>
             <Input
               id="billing-city"
               type="text"
@@ -225,7 +225,7 @@ export default function OrderNow() {
             {errors.city && <p className="mt-1 text-sm text-red-600">{errors.city}</p>}
           </div>
           <div>
-            <label htmlFor="billing-postcode" className="block text-sm font-medium text-gray-700">Postal code</label>
+            <label htmlFor="billing-postcode" className="block text-sm font-medium text-gray-700">Poštanski broj</label>
             <Input
               id="billing-postcode"
               type="text"

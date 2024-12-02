@@ -10,15 +10,14 @@ export default function HeroSectionImageWithReviews() {
         <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
           <div>
             <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-              MemoryPlate: Honor Their Legacy
+              MemoryPlate: Poštujte njihovo nasledje
             </h1>
             <p className="mt-3 text-xl text-muted-foreground">
-              Create lasting digital memorials for your loved ones with our innovative QR code plaques.
+              Napravite trajne digitalne spomenike za svoje najmilije pomoću naših inovativnih pločica sa QR kodom
             </p>
-
             <div className="mt-7 grid gap-3 w-full sm:inline-flex">
               <Link href="/order-now">
-                <Button size="lg">Order now</Button>
+                <Button size="lg">Poruči odmah </Button>
               </Link>
             </div>
 
@@ -32,13 +31,13 @@ export default function HeroSectionImageWithReviews() {
                   {heart}
                 </div>
                 <p className="mt-3 text-sm">
-                  <span className="font-bold">4.9</span> /5 - from 500+ families
+                  <span className="font-bold">4.9</span> /5 - više od 500+ porodica
                 </p>
                 <div className="mt-5">
                   <p className="text-sm italic">
-                    &quot;MemoryPlate helped us create a beautiful tribute.&quot;
+                    &quot;MemoryPlate nam je pomogao da napravimo prelepu uspomenu&quot;
                   </p>
-                  <p className="text-xs mt-1">- The Johnson Family</p>
+                  <p className="text-xs mt-1">- Porodica Jovanovic</p>
                 </div>
               </div>
 
@@ -48,11 +47,11 @@ export default function HeroSectionImageWithReviews() {
                   <span className="font-semibold text-sm">Certified Partner</span>
                 </div>
                 <p className="mt-3 text-sm">
-                  Trusted by 100+ funeral homes
+                  Imamo poverenje u vise od 100 pogrebnih preduzeća.
                 </p>
                 <div className="mt-5">
                   <p className="text-sm">
-                    Preserving memories since 2020
+                    Čuvamo uspomene od 2024 godine.
                   </p>
                 </div>
               </div>

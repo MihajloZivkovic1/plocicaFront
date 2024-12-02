@@ -56,28 +56,28 @@ export default function Home() {
         <div className="container mx-auto px-4 py-12">
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="flex-1 flex flex-col justify-center mb-20">
-              <h3 className="text-2xl md:text-3xl font-semibold mb-4">Customize Your Memorial Profile</h3>
-              <p className="mb-6">With our user-friendly admin panel, you have complete control over your loved one&apos;s memorial profile. Easily edit and update information, add photos, and share cherished memories.</p>
+              <h3 className="text-2xl md:text-3xl font-semibold mb-4">Uredjujte profil pokojnika u bilo kom momentu</h3>
+              <p className="mb-6">Pomoću našeg administratorskog panela prilagođenom korisniku, imate potpunu kontrolu nad memorijalnim profilom svoje voljene osobe. Jednostavno uređujte i ažurirajte podatke, dodajte fotografije i delite drage uspomene.</p>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <Edit className="mr-2 mt-1 text-primary" />
                   <div>
-                    <h4 className="font-bold">Easy Editing</h4>
-                    <p className="text-sm text-muted-foreground">Update profile information with just a few clicks</p>
+                    <h4 className="font-bold">Lako uredjivanje</h4>
+                    <p className="text-sm text-muted-foreground">Ažurirajte informacije o profilu sa samo nekoliko klikova</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <Camera className="mr-2 mt-1 text-primary" />
                   <div>
-                    <h4 className="font-bold">Photo Galleries</h4>
-                    <p className="text-sm text-muted-foreground">Create and manage photo albums to showcase memories</p>
+                    <h4 className="font-bold">Galerija Slika</h4>
+                    <p className="text-sm text-muted-foreground">Kreirajte foto albume i upravljajte njima da biste prikazali uspomene</p>
                   </div>
                 </div>
                 <div className="flex items-start">
                   <Book className="mr-2 mt-1 text-primary" />
                   <div>
-                    <h4 className="font-bold">Story Sharing</h4>
-                    <p className="text-sm text-muted-foreground">Write and share stories about your loved one&apos;s life</p>
+                    <h4 className="font-bold">Deljenje zanimljivih prica pokojnika</h4>
+                    <p className="text-sm text-muted-foreground">Pišite i delite priče o životu vase voljene osobe</p>
                   </div>
                 </div>
               </div>

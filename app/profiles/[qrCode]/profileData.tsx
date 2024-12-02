@@ -82,7 +82,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <User className="mr-2" size={24} />
-                Short Biography
+                Kratka biografija
               </h2>
               <p className="text-gray-700 text-sm sm:text-base">{profile?.text || 'No bio available'}</p>
             </section>
@@ -92,7 +92,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Church className="mr-2" size={24} />
-                Religion
+                Religija
               </h2>
               <p className="text-gray-700 text-sm sm:text-base">{profile?.religion || 'No religion provided'}</p>
             </section>
@@ -102,7 +102,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Book className="mr-2" size={24} />
-                Biography
+                Biografija
               </h2>
               <div className="prose max-w-none text-sm sm:text-base">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
@@ -116,7 +116,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Calendar className="mr-2" size={24} />
-                Events
+                Pomeni
               </h2>
               <div className="space-y-4">
                 {events.map((event: Event, index: number) => (
@@ -136,11 +136,11 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <ImageIcon className="mr-2" size={24} />
-                Gallery
+                Galerija
               </h2>
               {images.length > 0 && (
                 <>
-                  <h3 className="text-lg font-semibold mb-2">Images</h3>
+                  <h3 className="text-lg font-semibold mb-2">Slike</h3>
                   <ScrollArea className="h-48 sm:h-72">
                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
                       {images.map((image: MediaItem, index: number) => (
@@ -164,7 +164,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                 <>
                   <h3 className="text-lg font-semibold mb-2 mt-4 flex items-center">
                     <Film className="mr-2" size={20} />
-                    Videos
+                    Video
                   </h3>
                   <ScrollArea className="h-48 sm:h-72">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
@@ -182,7 +182,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                 </>
               )}
               {images.length === 0 && videos.length === 0 && (
-                <p className="text-gray-500">No media available</p>
+                <p className="text-gray-500">Nema Slika</p>
               )}
             </section>
 
@@ -191,7 +191,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section>
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <BookOpen className="mr-2" size={24} />
-                Stories
+                Zanimljive Priče
               </h2>
               <div className="space-y-4">
                 {stories.map((story: Story, index: number) => (

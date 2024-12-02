@@ -48,7 +48,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to create a new story");
+        throw new Error("Greška pri pravljenju priče");
       }
 
       const newStory = await response.json();
@@ -73,10 +73,10 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
       }
       else {
-        console.error("Failed to delete story");
+        console.error("Greška pri birsanju priče");
       }
     } catch (error) {
-      console.error("Error deleting story", error)
+      console.error("Greška pri birsanju priče", error)
     }
 
   }
@@ -105,7 +105,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
         setStoryMessages((prev) => ({
           ...prev,
-          [storyId]: "Story updated successfully!",
+          [storyId]: "Uspešno promenjena priča!",
         }));
 
         setTimeout(() => {
@@ -153,8 +153,8 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
                 </div>
               )}
               <div className='flex justify-evenly'>
-                <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4'>Delete Story</Button>
-                <Button onClick={() => updateStory(story.id)} className='m-4'>Update Story</Button>
+                <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4'>Obrisi Priču</Button>
+                <Button onClick={() => updateStory(story.id)} className='m-4'>Izmeni Priču</Button>
               </div>
             </div>
           ))

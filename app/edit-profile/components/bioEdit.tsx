@@ -38,7 +38,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
         body: JSON.stringify({ bio: text }), // Wrap text in an object
       });
 
-      setSuccessMessage("Text saved successfully!");
+      setSuccessMessage("Text uspešno sačuvan!");
     } catch (error) {
       console.error("Error saving bio text:", error);
     }
@@ -47,7 +47,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
   return (
     <>
       <MdEditor preview={false} modelValue={text} onChange={setText} style={{ height: '400px' }}></MdEditor>
-      <Button onClick={handleSave} className='m-5'>Save Biography</Button>
+      <Button onClick={handleSave} className='m-5'>Sačuvaj biografiju</Button>
       <MessageAlert type="success" message={successMessage} />
     </>
   );

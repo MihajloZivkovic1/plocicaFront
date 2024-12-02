@@ -39,7 +39,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
 
       if (response.ok) {
         setMedia((prevMedia) => prevMedia.filter((media) => media.id !== mediaId));
-        console.log("Media deleted successfully");
+        console.log("Uspešno obrisana slika");
       } else {
         console.error("Failed to delete media");
       }
@@ -68,7 +68,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
           console.log(newMedia);
           setMedia((prevMedia) => [...prevMedia, newMedia.media]);
           setSelectedFile(null);
-          console.log("Photo uploaded successfully");
+          console.log("Uspešno postavljena slika");
         } else {
           console.error("Failed to upload photo");
         }
@@ -92,10 +92,10 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
   return (
     <div>
       <div className="flex justify-evenly">
-        <h1 className="text-2xl font-bold">Media/Photos</h1>
+        <h1 className="text-2xl font-bold">Slike</h1>
         <form>
           <Button onClick={handleButtonClick} type="button">
-            Upload Image
+            Dodajte Sliku
           </Button>
           <input
             type="file"
@@ -134,7 +134,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
                   />
                 </div>
                 <div className="p-2 text-center">
-                  <Button onClick={() => deleteMedia(photo.id)} className="mt-2">Delete Photo</Button>
+                  <Button onClick={() => deleteMedia(photo.id)} className="mt-2">Obrišite Sliku</Button>
                 </div>
               </div>
             ))}

@@ -92,9 +92,9 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center">Welcome to MemoryPlate</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">Dobro Došli to MemoryPlate</CardTitle>
           <CardDescription className="text-center">
-            Activate your product to start preserving memories
+            Aktivirajte svoju pločicu kako biste poceli da cuvate uspomene!
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -122,7 +122,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="activationCode">Activation Code</Label>
+              <Label htmlFor="activationCode">Aktivacioni Kod</Label>
               <Input
                 type="text"
                 id="activationCode"
@@ -133,7 +133,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="profileName">Name of the Deceased</Label>
+              <Label htmlFor="profileName">Ime pokojnika</Label>
               <Input
                 type="text"
                 id="profileName"
@@ -145,7 +145,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Your Email</Label>
+              <Label htmlFor="email">Vaš Email</Label>
               <Input
                 type="email"
                 id="email"
@@ -156,7 +156,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Your Password</Label>
+              <Label htmlFor="password">Vaša Lozinka</Label>
               <Input
                 type="password"
                 id="password"
@@ -166,7 +166,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 required
               />
             </div>
-            <Button type="submit" className="w-full">Activate Profile</Button>
+            <Button type="submit" className="w-full">Aktivirajte Pločicu</Button>
           </form>
         </CardContent>
       </Card>

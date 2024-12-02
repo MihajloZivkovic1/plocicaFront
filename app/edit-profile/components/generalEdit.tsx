@@ -111,12 +111,12 @@ export default function GeneralEdit({ id }: { id: string }) {
     let isValid = true;
 
     if (formData.profileName.trim() === "") {
-      newErrors.profileName = "Profile name is required.";
+      newErrors.profileName = "Morate uneti ime pokojnika";
       isValid = false;
     }
 
     if (formData.dateOfBirth && formData.dateOfDeath && formData.dateOfBirth > formData.dateOfDeath) {
-      newErrors.dateOfDeath = "Date of Birth cannot be later than Date of Death.";
+      newErrors.dateOfDeath = "Datum rodjenja ne može da bude posle datuma smrti";
       isValid = false;
     }
 
@@ -139,7 +139,7 @@ export default function GeneralEdit({ id }: { id: string }) {
     if (!validateForm()) {
       toast({
         title: "Error",
-        description: "Failed to update profile, please try again",
+        description: "Greška kod uredjivanja profila, molim vas pokušajte ponovo",
         variant: "destructive",
       })
       return;
@@ -164,12 +164,12 @@ export default function GeneralEdit({ id }: { id: string }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update profile');
+        throw new Error('Greška kod uredjivanja profila, molim vas pokušajte ponovo');
       }
 
       toast({
         title: "Success",
-        description: "Profile updated successfully!",
+        description: "Uspesno ste uredili profil!",
       })
       setErrors({ profileName: "", dateOfBirth: "", dateOfDeath: "", text: "" });
 
@@ -196,7 +196,7 @@ export default function GeneralEdit({ id }: { id: string }) {
     if (!photoFile) {
       toast({
         title: "Error",
-        description: "No image selected",
+        description: "Niste izabrali sliku",
         variant: "destructive",
       })
       return;
@@ -212,18 +212,18 @@ export default function GeneralEdit({ id }: { id: string }) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update profile image');
+        throw new Error('Greška pri updejtu slike');
       }
 
       toast({
         title: "Success",
-        description: "Profile image updated successfully!",
+        description: "Profilna slika promenjena uspesno!",
       })
     } catch (error) {
-      console.error('Error updating profile image:', error);
+      console.error('Greška pri menjanju slike', error);
       toast({
         title: "Error",
-        description: "Failed to update profile image",
+        description: "Greška pri menjanju slike",
         variant: "destructive",
       })
     }
@@ -251,10 +251,10 @@ export default function GeneralEdit({ id }: { id: string }) {
           </Avatar>
           <div className="ml-4 space-x-2">
             <Button onClick={handleButtonClick} type='button' className='mt-4'>
-              Upload image
+              Dodaj Sliku
             </Button>
             <Button onClick={handleSaveImage} type='button' variant="outline" className='mt-4'>
-              Save image
+              Sacuvaj Sliku
             </Button>
           </div>
           <input
@@ -268,7 +268,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         </div>
 
 
-        <label htmlFor='profileName'>First Name</label>
+        <label htmlFor='profileName'>Ime i prezime pokojnika </label>
         <div className='flex'>
           <Input
             type="text"
@@ -280,7 +280,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         </div>
 
         {errors.profileName && <div className="text-red-500">{errors.profileName}</div>}
-        <label htmlFor='dateOfBirth'>Date of Birth</label>
+        <label htmlFor='dateOfBirth'>Datum rodjenja</label>
         <div className="flex">
           <Input
             type="date"
@@ -291,7 +291,7 @@ export default function GeneralEdit({ id }: { id: string }) {
           {errors.dateOfBirth && <div className="text-red-500">{errors.dateOfBirth}</div>}
         </div>
 
-        <label htmlFor='dateOfDeath'>Date of Death</label>
+        <label htmlFor='dateOfDeath'>Datum smrti</label>
         <div className="flex">
           <Input
             type="date"
@@ -303,7 +303,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         {errors.dateOfDeath && <div className="text-red-500">{errors.dateOfDeath}</div>}
 
 
-        <label htmlFor="religion">Religion</label>
+        <label htmlFor="religion">Religija</label>
         <Input
           type="text"
           name="religion"
@@ -311,7 +311,7 @@ export default function GeneralEdit({ id }: { id: string }) {
           value={formData.religion}
 
         />
-        <label htmlFor="placeOfBirth">Place of birth</label>
+        <label htmlFor="placeOfBirth">Mesto rodjenja</label>
         <Input
           type="text"
           name="placeOfBirth"
@@ -319,7 +319,7 @@ export default function GeneralEdit({ id }: { id: string }) {
           value={formData.placeOfBirth}
 
         />
-        <label htmlFor="placeOfDeath">Place of death</label>
+        <label htmlFor="placeOfDeath">Mesto smrti</label>
         <Input
           type="text"
           value={formData.placeOfDeath}
@@ -336,7 +336,7 @@ export default function GeneralEdit({ id }: { id: string }) {
 
 
         <div className=''>
-          <Button type='submit'>Save Changes</Button>
+          <Button type='submit'>Sacuvaj izmene na profilu</Button>
         </div>
 
       </form>

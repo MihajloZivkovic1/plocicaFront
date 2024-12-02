@@ -6,23 +6,23 @@ export default function TestimonialSection() {
     <section className="py-16 bg-gradient-to-br from-amber-100 via-rose-100 to-violet-100">
       <div className="container mx-auto px-4">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">
-          Preserving Memories, Honoring Lives
+          Čuvanje sećanja, poštovanje života..
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <FeatureCard
             icon={<Heart className="w-12 h-12 text-rose-500" />}
-            title="Create Lasting Tributes"
-            description="Design beautiful digital memorials that capture the essence of your loved ones."
+            title="Napravite trajne posvete"
+            description="Kreirajte prelepe digitalne uspomene koji prikazuju suštinu vaših najmilijih."
           />
           <FeatureCard
             icon={<Camera className="w-12 h-12 text-amber-500" />}
-            title="Share Cherished Moments"
-            description="Upload and organize photos and videos to celebrate a life well-lived."
+            title="Delite drage trenutke"
+            description="Dodajte i organizujte fotograije i video zapise kako biste proslavili dobro proživljen zivot."
           />
           <FeatureCard
             icon={<Book className="w-12 h-12 text-violet-500" />}
-            title="Tell Their Story"
-            description="Write and preserve life stories, achievements, and precious memories for generations to come."
+            title="Ispričajte njihovu priču"
+            description="Pišite i čuvajte životne priče, dostignuća i dragocene uspomene za generacije koje dolaze."
           />
         </div>
       </div>
