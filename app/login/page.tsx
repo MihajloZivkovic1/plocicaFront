@@ -47,7 +47,7 @@ export default function Page() {
     <section>
       <>
         <div>
-          <section className="flex items-center justify-center height-for-form">
+          <section className="flex items-center justify-center height-for-form mt-28">
             <div className="w-full max-w-lg bg-white rounded-lg shadow-lg dark:border dark:bg-gray-800 dark:border-gray-700">
               <div className="p-8 space-y-6">
                 <a
@@ -57,7 +57,7 @@ export default function Page() {
                   MemoryPlate
                 </a>
                 <h1 className="text-2xl font-bold leading-tight tracking-tight text-gray-900 md:text-3xl dark:text-white">
-                  Sign in to your account
+                  Ulogujte se
                 </h1>
                 {<MessageAlert type="error" message={loginError} />}
                 <form onSubmit={handleSubmit}
@@ -67,7 +67,7 @@ export default function Page() {
                       htmlFor="email"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Your email
+                      Vaš email
                     </label>
                     <input
                       type="email"
@@ -85,7 +85,7 @@ export default function Page() {
                       htmlFor="password"
                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                     >
-                      Password
+                      Šifra
                     </label>
                     <input
                       type="password"
@@ -100,7 +100,7 @@ export default function Page() {
                     />
                   </div>
                   <div className="pt-8">
-                    <Button type="submit" className="w-full py-3 text-lg">Log in</Button>
+                    <Button type="submit" className="w-full py-3 text-lg">Uloguj se</Button>
                   </div>
                 </form>
               </div>

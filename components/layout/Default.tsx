@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Navbar } from "../navbar";
 
-import { getSession, logout } from "../../lib";
+import { getSession } from "../../lib";
 import { Toaster } from "@/components/ui/toaster"
 
 export const DefaultLayout = async ({
@@ -12,7 +12,7 @@ export const DefaultLayout = async ({
   const session = await getSession();
 
   return <>
-    <Navbar session={session} logout={logout}></Navbar>
+    <Navbar session={session}></Navbar>
     <div className="">
 
       {children}

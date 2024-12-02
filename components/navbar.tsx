@@ -2,11 +2,10 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { NextResponse } from "next/server";
-import { QrCodeIcon } from "lucide-react";
+// import { NextResponse } from "next/server";
+import { UserRoundPen } from "lucide-react";
 
-
-export function Navbar({ session, logout }: NavbarProps) {
+export function Navbar({ session }: NavbarProps) {
   console.log("Session", session);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -29,7 +28,7 @@ export function Navbar({ session, logout }: NavbarProps) {
             <h1 className="font-black">MemoryPlate</h1>
           </Link>
           <Link href="/dashboard" className="flex items-center" prefetch={false}>
-            <QrCodeIcon className="h-6 w-6" />
+            <UserRoundPen className="h-6 w-6" />
           </Link>
           {/* Mobile menu toggle button */}
           <button onClick={toggleMenu} className="md:hidden text-gray-800 dark:text-gray-200 focus:outline-none">
@@ -39,11 +38,25 @@ export function Navbar({ session, logout }: NavbarProps) {
           </button>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex gap-4">
-            <NavLink href="/" label="Home" className={classNameForLinks} />
-            <NavLink href="/contact" label="Contact" className={classNameForLinks} />
-            <NavLink href="/dashboard" label="Dashboard" className={classNameForLinks} />
-            <NavLink href="/order-now" label="Order Now" className={classNameForLinks} />
+          <nav className="hidden md:flex gap-4 flex justify-center items-center">
+            <NavLink href="/" label="Početna" className={classNameForLinks} />
+            <NavLink href="/contact" label="Kontakt" className={classNameForLinks} />
+            <NavLink href="/dashboard" label="Moje Pločice" className={classNameForLinks} />
+            <NavLink href="/order-now" label="Poruči Pločicu" className={classNameForLinks} />
+
+            {isLoggedIn ? (
+              <form action="/api/auth/logout" method="POST">
+                <Button type="submit" variant="outline" size="sm">
+                  Izloguj se
+                </Button>
+              </form>
+            ) : (
+              <Link href="/login">
+                <Button variant="outline" size="sm">
+                  Uloguj se
+                </Button>
+              </Link>
+            )}
 
           </nav>
           {/* Desktop Menu */}
@@ -54,21 +67,7 @@ export function Navbar({ session, logout }: NavbarProps) {
           </nav> */}
 
           {/* Sign-in button */}
-          <div className="flex items-center gap-4">
-            {isLoggedIn ? (
-              <form action="/api/auth/logout" method="POST">
-                <Button type="submit" variant="outline" size="sm">
-                  Logout
-                </Button>
-              </form>
-            ) : (
-              <Link href="/login">
-                <Button variant="outline" size="sm">
-                  Sign in
-                </Button>
-              </Link>
-            )}
-          </div>
+
         </div>
       </div>
 
@@ -82,25 +81,25 @@ export function Navbar({ session, logout }: NavbarProps) {
               </svg>
             </button>
             <nav className="flex flex-col space-y-4">
-              <NavLink href="/" label="Home" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/contact" label="Contact" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/dashboard" label="Dashboard" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/order-now" label="Order Now" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/" label="Početna" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/contact" label="Kontakt" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/dashboard" label="Moje Pločice" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/order-now" label="Poruči Pločicu" onClick={toggleMenu} className={classNameForLinks} />
 
-              <div>{isLoggedIn ? (
-                < Link href="/login" onClick={logout}>
-                  <Button variant="outline" size="sm" onClick={toggleMenu}>
-                    Logout
+              {isLoggedIn ? (
+                <form action="/api/auth/logout" method="POST">
+                  <Button type="submit" variant="outline" size="sm" onClick={toggleMenu}>
+                    Izloguj se
                   </Button>
-                </Link>
+                </form>
               ) : (
                 <Link href="/login">
                   <Button variant="outline" size="sm" onClick={toggleMenu}>
-                    Sign in
+                    Uloguj se
                   </Button>
                 </Link>
               )}
-              </div>
+
 
             </nav>
           </div>
@@ -127,7 +126,7 @@ interface NavbarProps {
         email: string;
       };
     }
-  } | null, logout: () => Promise<NextResponse> | null,
+  } | null
 }
 const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick, className }) => (
   <Link href={href} onClick={onClick} className={className}>
