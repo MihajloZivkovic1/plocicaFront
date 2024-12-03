@@ -91,9 +91,8 @@ export function Navbar({ session }: NavbarProps) {
                 <form
                   action="/api/auth/logout"
                   method="POST"
-                  onSubmit={() => {
+                  onSubmit={() =>
                     toggleMenu
-                  }
                   }
                 >
                   <Button type="submit" variant="outline" size="sm">

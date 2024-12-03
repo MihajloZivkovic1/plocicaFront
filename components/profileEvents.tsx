@@ -136,7 +136,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
     <div>
       <div>
         <div className='flex justify-evenly'>
-          <h1 className="text-3xl font-bold mt-1">Pomeni</h1>
+          <h1 className="text-3xl font-bold mt-5">Pomeni</h1>
           <Plus size={40} strokeWidth={3} onClick={addNewEvent}>Dodaj Pomen</Plus>
         </div>
 

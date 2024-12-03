@@ -25,7 +25,7 @@ export default function GeneralEdit({ id }: { id: string }) {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
+
 
   const [errors, setErrors] = useState({
     profileName: "",
@@ -95,7 +95,7 @@ export default function GeneralEdit({ id }: { id: string }) {
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      setPhotoFile(file);
+
       const reader = new FileReader();
       reader.onload = () => setPreviewImage(reader.result as string);
       reader.readAsDataURL(file);
