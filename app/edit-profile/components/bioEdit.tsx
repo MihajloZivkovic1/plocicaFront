@@ -1,16 +1,17 @@
 "use client"
+
 import React, { useState, useEffect } from 'react';
 import { MdEditor } from 'md-editor-rt';
 import 'md-editor-rt/lib/style.css';
 import 'md-editor-rt/lib/preview.css';
 import { Button } from '@/components/ui/button'
-import { MessageAlert } from "@/components/ui/MessageAlert";
+import { useToast } from '@/hooks/use-toast';
 
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 export default function BioEdit({ id }: { id: string | undefined }) {
   const [text, setText] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const { toast } = useToast()
 
   useEffect(() => {
     const fetchBio = async () => {
@@ -22,33 +23,67 @@ export default function BioEdit({ id }: { id: string | undefined }) {
         }
       } catch (error) {
         console.error("Error fetching bio:", error);
+        toast({
+          title: "Error",
+          description: "Greška pri učitavanju biografije. Molimo pokušajte ponovo.",
+          variant: "destructive",
+        })
       }
     };
     fetchBio();
-  }, [id]);
-
+  }, [id, toast]);
 
   const handleSave = async () => {
     try {
-      await fetch(`https://plocicaapi.onrender.com/profiles/edit/bio/${id}`, {
+      const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/bio/${id}`, {
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'PUT',
-        body: JSON.stringify({ bio: text }), // Wrap text in an object
+        body: JSON.stringify({ bio: text }),
       });
 
-      setSuccessMessage("Text uspešno sačuvan!");
+      if (!response.ok) {
+        throw new Error('Greška pri čuvanju biografije');
+      }
+
+      toast({
+        title: "Success",
+        description: "Biografija je uspešno sačuvana!",
+      })
     } catch (error) {
       console.error("Error saving bio text:", error);
+      toast({
+        title: "Error",
+        description: "Greška pri čuvanju biografije. Molimo pokušajte ponovo.",
+        variant: "destructive",
+      })
     }
   }
 
   return (
-    <>
-      <MdEditor preview={false} modelValue={text} onChange={setText} style={{ height: '400px' }}></MdEditor>
-      <Button onClick={handleSave} className='m-5'>Sačuvaj biografiju</Button>
-      <MessageAlert type="success" message={successMessage} />
-    </>
+    <Card className="w-full max-w-3xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Uredi Biografiju</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="md-editor-container">
+          <MdEditor
+            preview={false}
+            modelValue={text}
+            onChange={setText}
+            style={{ height: '300px' }}
+            toolbars={[
+              'bold',
+              'underline',
+              'italic',
+            ]}
+          />
+        </div>
+        <Button onClick={handleSave} className="w-full">Sačuvaj biografiju</Button>
+      </CardContent>
+
+    </Card>
   );
 }
+

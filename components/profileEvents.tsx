@@ -3,8 +3,7 @@ import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { MessageAlert } from '@/components/ui/MessageAlert'
-import { Trash2 } from 'lucide-react';
-
+import { Trash2, Plus } from 'lucide-react';
 
 interface Event {
   id: string;
@@ -60,8 +59,8 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
         },
         body: JSON.stringify({
           profileId: id,
-          title: 'Title of Event',
-          location: 'Location of Event',
+          title: 'Naziv Pomena',
+          location: 'Lokacija',
           dateOfEvent: new Date(),
           timeOfEvent: ""
         })
@@ -131,18 +130,19 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       console.error(error)
     }
   }
+  <Plus size={40} strokeWidth={3} />
 
   return (
     <div>
       <div>
         <div className='flex justify-evenly'>
-          <h1 className="text-2xl font-bold">Events</h1>
-          <Button onClick={addNewEvent} className='ml-2'>Dodaj Dogadjaj</Button>
+          <h1 className="text-3xl font-bold mt-1">Pomeni</h1>
+          <Plus size={40} strokeWidth={3} onClick={addNewEvent}>Dodaj Pomen</Plus>
         </div>
 
         <div className="space-y-4 mt-4 flex flex-col-reverse">
           {events.length === 0 ? (
-            <p>No events available</p>
+            <p>Trenutno nemate ni jedan pomen, kliknite na plusić iznad kako biste ga kreirali</p>
           ) : (
             events.map((event: Event, index) => (
               <div key={`${event.id}-${index}`} className="border m-5 rounded-md shadow-md">

@@ -1,11 +1,11 @@
+'use client'
+
 import React, { useState, useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { useToast } from '@/hooks/use-toast';
-import { Toaster } from "@/components/ui/toaster"
-
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 type Profile = {
   profile: {
@@ -19,7 +19,6 @@ type Profile = {
     photo: string | File;
   };
 };
-
 
 export default function GeneralEdit({ id }: { id: string }) {
   const { toast } = useToast()
@@ -35,7 +34,6 @@ export default function GeneralEdit({ id }: { id: string }) {
     text: "",
   });
 
-
   const [formData, setFormData] = useState({
     profileName: '',
     dateOfBirth: '',
@@ -45,13 +43,13 @@ export default function GeneralEdit({ id }: { id: string }) {
     placeOfDeath: '',
     text: '',
   })
+
   useEffect(() => {
     async function fetchProfile() {
       const res = await fetch(`https://plocicaapi.onrender.com/profiles/profile/${id}`);
       const data = await res.json();
       setProfile(data);
       const newImageUrl = data.profile.photo;
-      console.log(data.profile.photo);
       setPreviewImage(newImageUrl + '?v=' + new Date().getTime());
     }
     fetchProfile();
@@ -68,7 +66,6 @@ export default function GeneralEdit({ id }: { id: string }) {
         placeOfDeath: profile.profile.placeOfDeath || "",
         text: profile.profile.text || ""
       });
-
     }
   }, [profile]);
 
@@ -78,7 +75,6 @@ export default function GeneralEdit({ id }: { id: string }) {
 
     setErrors((prevErrors) => {
       const newErrors = { ...prevErrors };
-
       if (name === "text" && value.length < 10) {
         newErrors.text = "Text must be at least 10 characters long.";
       } else if (name === "text" && value.length > 255) {
@@ -96,13 +92,16 @@ export default function GeneralEdit({ id }: { id: string }) {
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setPhotoFile(file);
       const reader = new FileReader();
       reader.onload = () => setPreviewImage(reader.result as string);
       reader.readAsDataURL(file);
+
+
+      await handleSaveImage(file);
     }
   };
 
@@ -120,18 +119,9 @@ export default function GeneralEdit({ id }: { id: string }) {
       isValid = false;
     }
 
-    // if (formData.text.length < 10) {
-    //   newErrors.text = "Text must be at least 10 characters long.";
-    //   isValid = false;
-    // } else if (formData.text.length > 255) {
-    //   newErrors.text = "Text must be less than 255 characters long.";
-    //   isValid = false;
-    // }
-
     setErrors(newErrors);
     return isValid;
   };
-
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -153,10 +143,6 @@ export default function GeneralEdit({ id }: { id: string }) {
       formDataToSend.append('religion', formData.religion);
       formDataToSend.append('placeOfBirth', formData.placeOfBirth);
       formDataToSend.append('placeOfDeath', formData.placeOfDeath);
-
-      if (photoFile) {
-        formDataToSend.append('profileImage', photoFile);
-      }
 
       const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/${id}`, {
         method: 'PUT',
@@ -192,19 +178,10 @@ export default function GeneralEdit({ id }: { id: string }) {
     }
   };
 
-  const handleSaveImage = async () => {
-    if (!photoFile) {
-      toast({
-        title: "Error",
-        description: "Niste izabrali sliku",
-        variant: "destructive",
-      })
-      return;
-    }
-
+  const handleSaveImage = async (file: File) => {
     try {
       const formData = new FormData();
-      formData.append('profileImage', photoFile);
+      formData.append('profileImage', file);
 
       const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/${id}`, {
         method: 'PUT',
@@ -238,109 +215,101 @@ export default function GeneralEdit({ id }: { id: string }) {
     return `${year}-${month}-${day}`;
   };
 
-  // const formattedDateOfBirth = formatDateForInput(profile?.profile.dateOfBirth ?? "");
-
-
   return (
-    <div className="flex flex-col items-center h-screen p-5">
-      <form onSubmit={handleSaveChanges} className="grid gap-6 mb-6 w-full grid-cols-1 ">
-        <div className="flex items-center">
-          <Avatar >
-            <AvatarImage src={previewImage ?? 'default-image-url.jpg'} alt="User profile photo" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="ml-4 space-x-2">
-            <Button onClick={handleButtonClick} type='button' className='mt-4'>
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold">Uredjuj Profil</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSaveChanges} className="space-y-4">
+          <div className="flex items-center space-x-4">
+            <Avatar className="w-20 h-20">
+              <AvatarImage src={previewImage ?? '/placeholder.svg'} alt="User profile photo" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Button onClick={handleButtonClick} type='button'>
               Dodaj Sliku
             </Button>
-            <Button onClick={handleSaveImage} type='button' variant="outline" className='mt-4'>
-              Sacuvaj Sliku
-            </Button>
+            <input
+              type="file"
+              name='profilePhoto'
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/*"
+            />
           </div>
-          <input
-            type="file"
-            name='profilePhoto'
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            accept="image/*"
-          />
-        </div>
 
+          <div className="space-y-2">
+            <label htmlFor='profileName' className="text-sm font-medium">Ime i prezime pokojnika</label>
+            <Input
+              type="text"
+              name="profileName"
+              value={formData.profileName}
+              onChange={handleInputChange}
+              className="w-full"
+            />
+            {errors.profileName && <div className="text-red-500 text-sm">{errors.profileName}</div>}
+          </div>
 
-        <label htmlFor='profileName'>Ime i prezime pokojnika </label>
-        <div className='flex'>
-          <Input
-            type="text"
-            name="profileName"
-            value={formData.profileName}
-            onChange={handleInputChange}
-            className="w-full"
-          />
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label htmlFor='dateOfBirth' className="text-sm font-medium">Datum rodjenja</label>
+              <Input
+                type="date"
+                name="dateOfBirth"
+                value={formData.dateOfBirth}
+                onChange={handleInputChange}
+              />
+              {errors.dateOfBirth && <div className="text-red-500 text-sm">{errors.dateOfBirth}</div>}
+            </div>
 
-        {errors.profileName && <div className="text-red-500">{errors.profileName}</div>}
-        <label htmlFor='dateOfBirth'>Datum rodjenja</label>
-        <div className="flex">
-          <Input
-            type="date"
-            name="dateOfBirth"
-            value={formData.dateOfBirth}
-            onChange={handleInputChange}
-          />
-          {errors.dateOfBirth && <div className="text-red-500">{errors.dateOfBirth}</div>}
-        </div>
+            <div className="space-y-2">
+              <label htmlFor='dateOfDeath' className="text-sm font-medium">Datum smrti</label>
+              <Input
+                type="date"
+                name="dateOfDeath"
+                value={formData.dateOfDeath}
+                onChange={handleInputChange}
+              />
+              {errors.dateOfDeath && <div className="text-red-500 text-sm">{errors.dateOfDeath}</div>}
+            </div>
+          </div>
 
-        <label htmlFor='dateOfDeath'>Datum smrti</label>
-        <div className="flex">
-          <Input
-            type="date"
-            name="dateOfDeath"
-            value={formData.dateOfDeath}
-            onChange={handleInputChange}
-          />
-        </div>
-        {errors.dateOfDeath && <div className="text-red-500">{errors.dateOfDeath}</div>}
+          <div className="space-y-2">
+            <label htmlFor="religion" className="text-sm font-medium">Religija</label>
+            <Input
+              type="text"
+              name="religion"
+              onChange={handleInputChange}
+              value={formData.religion}
+            />
+          </div>
 
+          <div className="space-y-2">
+            <label htmlFor="placeOfBirth" className="text-sm font-medium">Mesto rodjenja</label>
+            <Input
+              type="text"
+              name="placeOfBirth"
+              onChange={handleInputChange}
+              value={formData.placeOfBirth}
+            />
+          </div>
 
-        <label htmlFor="religion">Religija</label>
-        <Input
-          type="text"
-          name="religion"
-          onChange={handleInputChange}
-          value={formData.religion}
+          <div className="space-y-2">
+            <label htmlFor="placeOfDeath" className="text-sm font-medium">Mesto smrti</label>
+            <Input
+              type="text"
+              value={formData.placeOfDeath}
+              onChange={handleInputChange}
+              name="placeOfDeath"
+            />
+          </div>
 
-        />
-        <label htmlFor="placeOfBirth">Mesto rodjenja</label>
-        <Input
-          type="text"
-          name="placeOfBirth"
-          onChange={handleInputChange}
-          value={formData.placeOfBirth}
-
-        />
-        <label htmlFor="placeOfDeath">Mesto smrti</label>
-        <Input
-          type="text"
-          value={formData.placeOfDeath}
-          onChange={handleInputChange}
-          name="placeOfDeath"
-
-        />
-        {/* <label htmlFor="text">Text</label>
-        <Textarea
-          value={formData.text}
-          onChange={handleInputChange}
-          name='text'
-        ></Textarea> */}
-
-
-        <div className=''>
-          <Button type='submit'>Sacuvaj izmene na profilu</Button>
-        </div>
-
-      </form>
-      <Toaster />
-    </div>
+          <Button type='submit' className="w-full">Sacuvaj izmene na profilu</Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 }
+

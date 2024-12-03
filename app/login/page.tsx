@@ -4,10 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { MessageAlert } from "@/components/ui/MessageAlert"
+
+import { useToast } from "@/hooks/use-toast"
+
+
 export default function Page() {
   const [loginError, setLoginError] = useState<string | null>(null);
   const [formData, setFormData] = useState({ email: "", password: "" });
 
+  const toast = useToast();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -26,6 +31,12 @@ export default function Page() {
         email: formData.email,
         password: formData.password
       });
+
+      toast.toast({
+        title: "Success",
+        description: "Uspešno ste se prijavili na vaš profil",
+        variant: "default",
+      })
       router.push("/");
     } catch (err: unknown) {
       if (err instanceof Error) {

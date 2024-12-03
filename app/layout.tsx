@@ -32,7 +32,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <Head>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
       </Head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}

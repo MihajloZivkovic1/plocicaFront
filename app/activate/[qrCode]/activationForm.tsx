@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
 
 export default function ActivationForm({ qrCode }: { qrCode: string }) {
   const [formData, setFormData] = useState({
@@ -18,6 +19,10 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
 
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+
+
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,6 +31,9 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage('');
 
     const dataToSubmit = {
       ...formData,
@@ -43,7 +51,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
 
       if (response.ok) {
         setSuccessMessage('Profile activated successfully! Redirecting...');
-        setErrorMessage('');
+        setIsRedirecting(true);
 
         const profileResponse = await fetch(`https://plocicaapi.onrender.com/profiles/${qrCode}`);
         const profile = await profileResponse.json();
@@ -58,12 +66,14 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
           }
         });
 
-        if (!loginResponse.ok) {
+
+        if (loginResponse.ok) {
+          router.push(`/edit-profile/${id}?tab=general`);
+        }
+        else {
           throw new Error('Failed to log in after activation');
         }
-        setTimeout(() => {
-          router.push(`/edit-profile/${id}?tab=general`);
-        }, 500);
+
 
       } else {
         const errorData = await response.json();
@@ -85,6 +95,10 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
       console.error('Failed to activate profile', error);
       setErrorMessage(`An error occurred while activating the profile.`);
       setSuccessMessage('');
+    }
+    finally {
+      if (!isRedirecting)
+        setIsLoading(false);
     }
   };
 
@@ -119,6 +133,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 name="qrCode"
                 defaultValue={qrCode}
                 readOnly
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -130,6 +145,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 value={formData.activationCode}
                 onChange={handleChange}
                 required
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -142,6 +158,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 onChange={handleChange}
                 required
                 formNoValidate
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -153,6 +170,7 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={isLoading || isRedirecting}
               />
             </div>
             <div className="space-y-2">
@@ -164,9 +182,19 @@ export default function ActivationForm({ qrCode }: { qrCode: string }) {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                disabled={isLoading || isRedirecting}
               />
             </div>
-            <Button type="submit" className="w-full">Aktivirajte Pločicu</Button>
+            <Button type="submit" className="w-full" disabled={isLoading || isRedirecting}>
+              {isLoading || isRedirecting ? (
+                <>
+                  <Spinner className='mr-2' />
+                  {isRedirecting ? 'Aktiviranje...' : 'Aktivacija u toku...'}
+                </>
+              ) : (
+                'Aktivirajte Pločicu'
+              )}
+            </Button>
           </form>
         </CardContent>
       </Card>

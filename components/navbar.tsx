@@ -72,6 +72,7 @@ export function Navbar({ session }: NavbarProps) {
       </div>
 
       {/* Sidebar for Mobile */}
+      {/* Sidebar for Mobile */}
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden">
           <div className="absolute top-0 left-0 w-3/4 max-w-xs h-full bg-white dark:bg-gray-900 p-6 shadow-lg">
@@ -87,25 +88,31 @@ export function Navbar({ session }: NavbarProps) {
               <NavLink href="/order-now" label="Poruči Pločicu" onClick={toggleMenu} className={classNameForLinks} />
 
               {isLoggedIn ? (
-                <form action="/api/auth/logout" method="POST">
-                  <Button type="submit" variant="outline" size="sm" onClick={toggleMenu}>
+                <form
+                  action="/api/auth/logout"
+                  method="POST"
+                  onSubmit={() => {
+                    toggleMenu
+                  }
+                  }
+                >
+                  <Button type="submit" variant="outline" size="sm">
                     Izloguj se
                   </Button>
                 </form>
               ) : (
-                <Link href="/login">
-                  <Button variant="outline" size="sm" onClick={toggleMenu}>
+                <Link href="/login" onClick={toggleMenu}>
+                  <Button variant="outline" size="sm">
                     Uloguj se
                   </Button>
                 </Link>
               )}
-
-
             </nav>
           </div>
-        </div >
+        </div>
       )
       }
+
     </nav >
   );
 }

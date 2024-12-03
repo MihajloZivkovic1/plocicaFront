@@ -114,3 +114,24 @@ body {
   margin-left: 40px;
   max-width: 80%;
 }
+
+.md-editor-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .md-editor-rt {
+    font-size: 14px;
+  }
+
+  .md-editor-rt .md-editor-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .md-editor-rt .md-editor-toolbar .md-editor-toolbar-item {
+    margin: 2px;
+  }
+}

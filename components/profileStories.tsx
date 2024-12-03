@@ -105,7 +105,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
         setStoryMessages((prev) => ({
           ...prev,
-          [storyId]: "Uspešno promenjena priča!",
+          [storyId]: "Uspešno sačuvana priča!",
         }));
 
         setTimeout(() => {
@@ -143,7 +143,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
               <MdEditor modelValue={story.text} onChange={setText} preview={false} style={{ height: '350px' }}></MdEditor>
               {storyMessages[story.id] && (
                 <div
-                  className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("success")
+                  className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("Uspešno")
                     ? "bg-green-50 text-green-800"
                     : "bg-red-50 text-red-800"
                     }`}
@@ -153,8 +153,8 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
                 </div>
               )}
               <div className='flex justify-evenly'>
-                <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4'>Obrisi Priču</Button>
-                <Button onClick={() => updateStory(story.id)} className='m-4'>Izmeni Priču</Button>
+                <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4'>Obriši Priču</Button>
+                <Button onClick={() => updateStory(story.id)} className='m-4'>Sacuvaj Priču</Button>
               </div>
             </div>
           ))
