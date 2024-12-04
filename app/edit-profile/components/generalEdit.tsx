@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Spinner } from "@/components/ui/spinner"
+import { useRouter } from "next/navigation"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 type Profile = {
   profile: {
@@ -25,8 +28,9 @@ export default function GeneralEdit({ id }: { id: string }) {
 
   const [profile, setProfile] = useState<Profile | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRedirecting, setIsRedirecting] = useState(false);
+  const router = useRouter();
   const [errors, setErrors] = useState({
     profileName: "",
     dateOfBirth: "",
@@ -125,6 +129,7 @@ export default function GeneralEdit({ id }: { id: string }) {
 
   const handleSaveChanges = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!validateForm()) {
       toast({
@@ -152,10 +157,12 @@ export default function GeneralEdit({ id }: { id: string }) {
       if (!response.ok) {
         throw new Error('Greška kod uredjivanja profila, molim vas pokušajte ponovo');
       }
+      setIsRedirecting(true);
+      router.push(`/edit-profile/${id}?tab=bio`)
 
       toast({
         title: "Success",
-        description: "Uspesno ste uredili profil!",
+        description: "Uspešno ste uredili profil!",
       })
       setErrors({ profileName: "", dateOfBirth: "", dateOfDeath: "", text: "" });
 
@@ -174,6 +181,11 @@ export default function GeneralEdit({ id }: { id: string }) {
           description: "An unexpected error occurred.",
           variant: "destructive",
         })
+      }
+    }
+    finally {
+      if (!isRedirecting) {
+        setIsLoading(false);
       }
     }
   };
@@ -216,100 +228,146 @@ export default function GeneralEdit({ id }: { id: string }) {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold">Uredjuj Profil</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSaveChanges} className="space-y-4">
-          <div className="flex items-center space-x-4">
-            <Avatar className="w-20 h-20">
-              <AvatarImage src={previewImage ?? '/placeholder.svg'} alt="User profile photo" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-            <Button onClick={handleButtonClick} type='button'>
-              Dodaj Sliku
+    <>
+      <Collapsible className="grid">
+        <CollapsibleTrigger asChild>
+          <Button className="w-full justify-start text-left font-semibold">
+            Kako da uredim profil pokojnika?
+          </Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent asChild>
+          <p className="text-sm leading-loose text-gray-500 md:text-base dark:text-gray-400">
+            Na stranici za uređivanje profila pokojnika, dostupna su sledeća polja za unos i izmene:
+            <br />
+            <strong>1. Fotografija:</strong> Kliknite na postojeću fotografiju da biste je izmenili ili dodali novu.
+            <br />
+            <strong>2. Ime i Prezime:</strong> Unesite ili izmenite ime i prezime pokojnika.
+            <br />
+            <strong>3. Datumi rođenja i smrti:</strong> Unesite datume u formatu (npr. DD.MM.GGGG).
+            <br />
+            <strong>4. Mesto rođenja i mesto smrti:</strong> Unesite lokaciju rođenja i lokaciju smrti.
+            <br />
+            <strong>5. Dugme za čuvanje podataka:</strong> Kliknite na dugme <em>Sačuvaj izmene na profilu</em> da biste sačuvali izmene i prešli na uređivanje biografije pokojnika.
+          </p>
+        </CollapsibleContent>
+      </Collapsible>
+
+      <Card className="w-full max-w-2xl mx-auto mt-2">
+        <CardHeader>
+          <CardTitle className="text-2xl font-bold">Uredjuj Profil</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSaveChanges} className="space-y-4">
+            <div className="flex items-center space-x-4">
+              <Avatar className="w-20 h-20">
+                <AvatarImage src={previewImage ?? '/placeholder.svg'} alt="User profile photo" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <Button onClick={handleButtonClick} type='button'>
+                Dodaj Sliku
+              </Button>
+              <input
+                type="file"
+                name='profilePhoto'
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor='profileName' className="text-sm font-medium">Ime i prezime pokojnika</label>
+              <Input
+                type="text"
+                name="profileName"
+                value={formData.profileName}
+                onChange={handleInputChange}
+                className="w-full"
+                disabled={isLoading || isRedirecting}
+
+              />
+              {errors.profileName && <div className="text-red-500 text-sm">{errors.profileName}</div>}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <label htmlFor='dateOfBirth' className="text-sm font-medium">Datum rodjenja</label>
+                <Input
+                  type="date"
+                  name="dateOfBirth"
+                  value={formData.dateOfBirth}
+                  onChange={handleInputChange}
+                  disabled={isLoading || isRedirecting}
+
+                />
+                {errors.dateOfBirth && <div className="text-red-500 text-sm">{errors.dateOfBirth}</div>}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor='dateOfDeath' className="text-sm font-medium">Datum smrti</label>
+                <Input
+                  type="date"
+                  name="dateOfDeath"
+                  value={formData.dateOfDeath}
+                  onChange={handleInputChange}
+                  disabled={isLoading || isRedirecting}
+
+                />
+                {errors.dateOfDeath && <div className="text-red-500 text-sm">{errors.dateOfDeath}</div>}
+              </div>
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="religion" className="text-sm font-medium">Religija</label>
+              <Input
+                type="text"
+                name="religion"
+                onChange={handleInputChange}
+                value={formData.religion}
+                disabled={isLoading || isRedirecting}
+
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="placeOfBirth" className="text-sm font-medium">Mesto rodjenja</label>
+              <Input
+                type="text"
+                name="placeOfBirth"
+                onChange={handleInputChange}
+                value={formData.placeOfBirth}
+                disabled={isLoading || isRedirecting}
+
+              />
+            </div>
+
+            <div className="space-y-2">
+              <label htmlFor="placeOfDeath" className="text-sm font-medium">Mesto smrti</label>
+              <Input
+                type="text"
+                value={formData.placeOfDeath}
+                onChange={handleInputChange}
+                name="placeOfDeath"
+                disabled={isLoading || isRedirecting}
+              />
+            </div>
+
+            <Button type='submit' className="w-full" disabled={isLoading || isRedirecting}>
+              {isLoading || isRedirecting ? (
+                <>
+                  <Spinner className='mr-2' />
+                  {isRedirecting ? 'Čuvanje profila' : 'Čuvanje profila u toku...'}
+                </>
+              ) : (
+                'Sačuvajte izmene na profilu '
+              )}
             </Button>
-            <input
-              type="file"
-              name='profilePhoto'
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-              accept="image/*"
-            />
-          </div>
+          </form>
+        </CardContent>
+      </Card>
+    </>
 
-          <div className="space-y-2">
-            <label htmlFor='profileName' className="text-sm font-medium">Ime i prezime pokojnika</label>
-            <Input
-              type="text"
-              name="profileName"
-              value={formData.profileName}
-              onChange={handleInputChange}
-              className="w-full"
-            />
-            {errors.profileName && <div className="text-red-500 text-sm">{errors.profileName}</div>}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <label htmlFor='dateOfBirth' className="text-sm font-medium">Datum rodjenja</label>
-              <Input
-                type="date"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleInputChange}
-              />
-              {errors.dateOfBirth && <div className="text-red-500 text-sm">{errors.dateOfBirth}</div>}
-            </div>
-
-            <div className="space-y-2">
-              <label htmlFor='dateOfDeath' className="text-sm font-medium">Datum smrti</label>
-              <Input
-                type="date"
-                name="dateOfDeath"
-                value={formData.dateOfDeath}
-                onChange={handleInputChange}
-              />
-              {errors.dateOfDeath && <div className="text-red-500 text-sm">{errors.dateOfDeath}</div>}
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="religion" className="text-sm font-medium">Religija</label>
-            <Input
-              type="text"
-              name="religion"
-              onChange={handleInputChange}
-              value={formData.religion}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="placeOfBirth" className="text-sm font-medium">Mesto rodjenja</label>
-            <Input
-              type="text"
-              name="placeOfBirth"
-              onChange={handleInputChange}
-              value={formData.placeOfBirth}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label htmlFor="placeOfDeath" className="text-sm font-medium">Mesto smrti</label>
-            <Input
-              type="text"
-              value={formData.placeOfDeath}
-              onChange={handleInputChange}
-              name="placeOfDeath"
-            />
-          </div>
-
-          <Button type='submit' className="w-full">Sacuvaj izmene na profilu</Button>
-        </form>
-      </CardContent>
-    </Card>
   );
 }
 
