@@ -10,7 +10,7 @@ import { Collapsible, CollapsibleContent } from './ui/collapsible';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { DropdownMenuLabel } from './ui/dropdown-menu';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { Trash2 } from 'lucide-react';
+import { ArrowDown, Trash2 } from 'lucide-react';
 
 
 interface Story {
@@ -23,7 +23,9 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
   const [stories, setStories] = useState<Story[]>([]);
   const [text, setText] = useState('');
   const [title, setTitle] = useState('');
-  const [storyMessages, setStoryMessages] = useState<Record<string, string>>({}); // Map of story ID to message
+  const [storyMessages, setStoryMessages] = useState<Record<string, string>>({});
+  const [hiddenEditors, setHiddenEditors] = useState<Record<number, boolean>>({});
+
 
   useEffect(() => {
     const fetchStories = async () => {
@@ -33,6 +35,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
         console.log(data);
         const storiesArray = data.stories
         setStories(storiesArray);
+
       } catch (error) {
         console.error("Error fetching stories", error);
       }
@@ -125,7 +128,12 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
       console.error(error)
     }
   }
-
+  const toggleMdEditor = (index: number) => {
+    setHiddenEditors((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
   return (
     <div>
       <Collapsible className="grid">
@@ -163,38 +171,44 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
             ) : (
               stories.map((story: Story, index) => (
                 <div key={`${story.id}-${index}`} className="border m-5 rounded-md shadow-md">
-                  <DropdownMenuLabel className='p-3'>Naslov Priče</DropdownMenuLabel>
+                  <div className="flex flex-row justify-between">
+                    <DropdownMenuLabel className='m-4'>Naslov Priče</DropdownMenuLabel>
+                    <Button className='m-4' variant={'ghost'}
+                      onClick={() => toggleMdEditor(index)}
+                    >
+                      <ArrowDown className='m-3' width={30} />
+                    </Button>
+                  </div>
                   <Input
                     type="text"
                     defaultValue={story.title}
-                    className="m-2 w-300"
+                    className="m-2 w-300 m-4"
                     onChange={(e) => setTitle(e.target.value)}
                   />
-                  <MdEditor
-                    modelValue={story.text}
-                    onChange={setText}
-                    preview={false}
-                    style={{ height: '300px' }}
-                    toolbars={[
-                      'bold',
-                      'underline',
-                      'italic',
-                    ]}
-                  >
+                  <div className={hiddenEditors[index] ? 'hidden' : ''}>
+                    <MdEditor
+                      modelValue={story.text}
+                      onChange={setText}
+                      preview={false}
+                      style={{ height: '300px' }}
+                      toolbars={['bold', 'underline', 'italic']}
+                    />
+                  </div>
 
-                  </MdEditor>
-                  {storyMessages[story.id] && (
-                    <div
-                      className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("Uspešno")
-                        ? "bg-green-50 text-green-800"
-                        : "bg-red-50 text-red-800"
-                        }`}
-                      role="alert"
-                    >
-                      <span>{storyMessages[story.id]}</span>
-                    </div>
-                  )}
-                  <div className='flex justify-evenly'>
+                  {
+                    storyMessages[story.id] && (
+                      <div
+                        className={`p-4 mb-4 text-sm rounded-lg mt-3 ${storyMessages[story.id].includes("Uspešno")
+                          ? "bg-green-50 text-green-800"
+                          : "bg-red-50 text-red-800"
+                          }`}
+                        role="alert"
+                      >
+                        <span>{storyMessages[story.id]}</span>
+                      </div>
+                    )
+                  }
+                  < div className='flex justify-evenly' >
                     <Button onClick={() => deleteStory(story.id)} variant={'destructive'} className='m-4 w-full'>
                       <Trash2 className="h-5 w-5" />
                     </Button>
@@ -204,8 +218,8 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
               ))
             )}
           </div>
-        </CardContent>
-      </Card>
+        </CardContent >
+      </Card >
 
 
 
