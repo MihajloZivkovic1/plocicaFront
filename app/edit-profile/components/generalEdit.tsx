@@ -110,8 +110,12 @@ export default function GeneralEdit({ id }: { id: string }) {
   };
 
   const validateForm = () => {
+
     const newErrors = { profileName: "", dateOfBirth: "", dateOfDeath: "", text: "" };
     let isValid = true;
+    const utc = new Date();
+    utc.setUTCHours(0, 0, 0, 0);
+
 
     if (formData.profileName.trim() === "") {
       newErrors.profileName = "Morate uneti ime pokojnika";
@@ -119,10 +123,18 @@ export default function GeneralEdit({ id }: { id: string }) {
     }
 
     if (formData.dateOfBirth && formData.dateOfDeath && formData.dateOfBirth > formData.dateOfDeath) {
-      newErrors.dateOfDeath = "Datum rodjenja ne može da bude posle datuma smrti";
+      newErrors.dateOfBirth = "Datum rodjenja ne može da bude posle datuma smrti";
+      newErrors.dateOfDeath = "Datum smrti ne može da bude pre datuma rodjenja";
       isValid = false;
     }
 
+    if (formData.dateOfDeath) {
+      const dateOfDeath = new Date(formData.dateOfDeath);
+      if (dateOfDeath > utc) {
+        newErrors.dateOfDeath = "Datum smrti ne može da bude u budućnosti";
+        isValid = false;
+      }
+    }
     setErrors(newErrors);
     return isValid;
   };
@@ -132,6 +144,7 @@ export default function GeneralEdit({ id }: { id: string }) {
     setIsLoading(true);
 
     if (!validateForm()) {
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "Greška kod uredjivanja profila, molim vas pokušajte ponovo",
@@ -176,6 +189,7 @@ export default function GeneralEdit({ id }: { id: string }) {
         })
       } else {
         console.error('Unexpected error:', error);
+
         toast({
           title: "Error",
           description: "An unexpected error occurred.",
