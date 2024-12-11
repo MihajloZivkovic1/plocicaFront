@@ -42,7 +42,6 @@ export default function GeneralEdit({ id }: { id: string }) {
     profileName: '',
     dateOfBirth: '',
     dateOfDeath: '',
-    religion: '',
     placeOfBirth: '',
     placeOfDeath: '',
     text: '',
@@ -65,7 +64,6 @@ export default function GeneralEdit({ id }: { id: string }) {
         profileName: profile.profile.profileName || "",
         dateOfBirth: formatDateForInput(profile.profile.dateOfBirth) || "",
         dateOfDeath: formatDateForInput(profile.profile.dateOfDeath) || "",
-        religion: profile.profile.religion || "",
         placeOfBirth: profile.profile.placeOfBirth || "",
         placeOfDeath: profile.profile.placeOfDeath || "",
         text: profile.profile.text || ""
@@ -158,7 +156,6 @@ export default function GeneralEdit({ id }: { id: string }) {
       formDataToSend.append('profileName', formData.profileName);
       formDataToSend.append('dateOfBirth', formData.dateOfBirth);
       formDataToSend.append('dateOfDeath', formData.dateOfDeath);
-      formDataToSend.append('religion', formData.religion);
       formDataToSend.append('placeOfBirth', formData.placeOfBirth);
       formDataToSend.append('placeOfDeath', formData.placeOfDeath);
 
@@ -332,7 +329,7 @@ export default function GeneralEdit({ id }: { id: string }) {
               </div>
             </div>
 
-            <div className="space-y-2">
+            {/* <div className="space-y-2">
               <label htmlFor="religion" className="text-sm font-medium">Religija</label>
               <Input
                 type="text"
@@ -342,7 +339,7 @@ export default function GeneralEdit({ id }: { id: string }) {
                 disabled={isLoading || isRedirecting}
 
               />
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <label htmlFor="placeOfBirth" className="text-sm font-medium">Mesto rodjenja</label>

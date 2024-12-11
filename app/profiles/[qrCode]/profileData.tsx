@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import StoryModal from '@/components/ui/modal'
-import { User, Book, Church, Calendar, Image as ImageIcon, BookOpen, Film } from 'lucide-react'
+import { Book, Calendar, Image as ImageIcon, BookOpen, Film } from 'lucide-react'
 import { fetchMedia } from '@/app/lib/fetchMedia'
 
 
@@ -79,26 +79,6 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
       <div className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <Card className="mb-6">
           <CardContent className="p-4 sm:p-6">
-            <section className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
-                <User className="mr-2" size={24} />
-                Kratka biografija
-              </h2>
-              <p className="text-gray-700 text-sm sm:text-base">{profile?.text || 'No bio available'}</p>
-            </section>
-
-            <Separator className="my-4 sm:my-6" />
-
-            <section className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
-                <Church className="mr-2" size={24} />
-                Religija
-              </h2>
-              <p className="text-gray-700 text-sm sm:text-base">{profile?.religion || 'No religion provided'}</p>
-            </section>
-
-            <Separator className="my-4 sm:my-6" />
-
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Book className="mr-2" size={24} />
