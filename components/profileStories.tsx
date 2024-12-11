@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { PlusCircle, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
+import { PlusCircle, ChevronDown, ChevronUp } from 'lucide-react'
 import { StoryWalkthrough } from '@/components/ui/StoryWalkthrough'
 import { StoryList } from '@/components/ui/StoryList'
 

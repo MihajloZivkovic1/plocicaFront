@@ -7,7 +7,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import StoryModal from '@/components/ui/modal'
-import { User, Book, Church, Calendar, Image as ImageIcon, BookOpen, Film } from 'lucide-react'
+import { Book, Calendar, Image as ImageIcon, BookOpen, Film } from 'lucide-react'
 import { fetchMedia } from '@/app/lib/fetchMedia'
 
 
