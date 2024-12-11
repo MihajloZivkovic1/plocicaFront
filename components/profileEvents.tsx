@@ -47,13 +47,15 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       if (Array.isArray(data)) {
         setEvents(data.map(event => ({
           ...event,
-          dateOfEvent: new Date(event.dateOfEvent),
-          timeOfEvent: new Date(event.timeOfEvent).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          dateOfEvent: event.dateOfEvent.split('T')[0],
+          timeOfEvent: event.timeOfEvent.split('T')[1]?.slice(0, 5) || '00:00', // Extract HH:mm
 
         })))
+
       } else {
         setEvents([])
       }
+
     } catch (error) {
       console.error("Error fetching events", error)
       toast({
@@ -66,13 +68,21 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
   useEffect(() => {
     fetchEvents()
-  }, [fetchEvents, id])
+  }, [id])
 
 
   const addNewEvent = async () => {
     const formattedTime = newEvent.time.includes(":") && newEvent.time.split(":").length === 2 ? `${newEvent.time}:00` : newEvent.time;
-    const formattedDate = "2024-02-01"
+    const formattedDate = "2024-02-01"; // Dummy date for time parsing
 
+    if (!newEvent.title || !newEvent.date || !newEvent.time) {
+      toast({
+        title: "Greška",
+        description: "Sva polja moraju biti popunjena.",
+        variant: "destructive",
+      })
+      return
+    }
 
     try {
       const response = await fetch(`https://plocicaapi.onrender.com/events/create/${id}`, {
@@ -85,32 +95,41 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           title: newEvent.title,
           location: newEvent.location || 'Unesite Lokaciju',
           dateOfEvent: newEvent.date ? new Date(newEvent.date).toISOString() : "",
-          timeOfEvent: new Date(`${formattedDate}T${formattedTime}`) ? new Date(`${formattedDate}T${formattedTime}`) : "1970-01-01T00:00.000Z"
-        })
-      })
+          timeOfEvent: new Date(`${formattedDate}T${formattedTime}`).toISOString(), // Save as ISO for backend
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error('Failed to create new event')
+        throw new Error('Failed to create new event');
       }
 
-      const createdEvent = await response.json()
-      setEvents((prevEvents) => [{ ...createdEvent.event, dateOfEvent: new Date(createdEvent.event.dateOfEvent) }, ...prevEvents])
-      setNewEvent({ title: "", location: "", date: "", time: "" })
-      setIsCreating(false)
-      console.log(createdEvent);
+      const createdEvent = await response.json();
+      const normalizedEvent = {
+        ...createdEvent.event,
+        dateOfEvent: createdEvent.event.dateOfEvent.split('T')[0],
+        timeOfEvent: new Date(createdEvent.event.timeOfEvent).toLocaleTimeString([], {
+          hour: '2-digit',
+          minute: '2-digit'
+        }),
+      };
+      setEvents((prevEvents) => [normalizedEvent, ...prevEvents]);
+      setNewEvent({ title: "", location: "", date: "", time: "" });
+      setIsCreating(false);
+
       toast({
         title: "Uspeh",
         description: "Uspešno ste dodali novi Pomen!",
-      })
+      });
     } catch (error) {
-      console.error("Error creating event", error)
+      console.error("Error creating event", error);
       toast({
         title: "Greška",
         description: "Greška pri dodavanju novog Pomena",
         variant: "destructive",
-      })
+      });
     }
-  }
+  };
+
 
   const deleteEvent = async (eventId: string) => {
     try {
@@ -140,7 +159,6 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
   }
 
   const updateEvent = async (eventId: string, updatedEvent: Partial<Event>) => {
-    console.log(updatedEvent.timeOfEvent);
     try {
       const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
         method: "PUT",
@@ -149,16 +167,20 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           profileId: id,
           ...updatedEvent,
           title: updatedEvent.title || "Unesite Lokaciju",
-          timeOfEvent: updatedEvent.timeOfEvent ? updatedEvent.timeOfEvent : "1970-01-01T00:00:00.000Z",
-
+          timeOfEvent: updatedEvent.timeOfEvent || "1970-01-01T00:00:00.000Z",
         })
       });
 
       if (response.ok) {
         const updatedEventData = await response.json();
+        const normalizedEvent = {
+          ...updatedEventData.event,
+          dateOfEvent: updatedEventData.event.dateOfEvent.split('T')[0],
+          timeOfEvent: updatedEventData.event.timeOfEvent.split('T')[1]?.slice(0, 5), // Normalize to HH:mm
+        };
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
-            event.id === eventId ? { ...event, ...updatedEventData.event } : event
+            event.id === eventId ? normalizedEvent : event
           )
         );
         toast({

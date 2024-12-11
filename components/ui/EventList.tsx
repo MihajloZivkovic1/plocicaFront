@@ -24,12 +24,13 @@ export function EventList({ events, onDelete, onUpdate, pomeni }: EventListProps
   const [editingEvent, setEditingEvent] = useState<string | null>(null)
   const [editedEvent, setEditedEvent] = useState<Partial<Event>>({})
 
+
   const handleEdit = (event: Event) => {
     setEditingEvent(event.id);
     setEditedEvent({
       ...event,
-      dateOfEvent: new Date(event.dateOfEvent).toISOString().split('T')[0],
-      timeOfEvent: event.timeOfEvent?.split('T')[1].slice(0, 5) ? event.timeOfEvent?.split('T')[1].slice(0, 5) : ""
+      dateOfEvent: event.dateOfEvent ? new Date(event.dateOfEvent).toISOString().split('T')[0] : "",
+      timeOfEvent: event.timeOfEvent ? new Date(`1970-01-01T${event.timeOfEvent}`).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : "",
     });
   };
 
@@ -41,8 +42,8 @@ export function EventList({ events, onDelete, onUpdate, pomeni }: EventListProps
   const handleUpdate = (id: string) => {
     const updatedEvent: Partial<Event> = {
       ...editedEvent,
-      dateOfEvent: `${editedEvent.dateOfEvent}T00:00:00.000Z`,
-      timeOfEvent: `${editedEvent.dateOfEvent}T${editedEvent.timeOfEvent}`,
+      dateOfEvent: `${editedEvent.dateOfEvent || "1970-01-01"}T00:00:00.000Z`,
+      timeOfEvent: `${editedEvent.dateOfEvent || "1970-01-01"}T${editedEvent.timeOfEvent || "00:00"}`,
     };
 
     onUpdate(id, updatedEvent);
@@ -98,9 +99,10 @@ export function EventList({ events, onDelete, onUpdate, pomeni }: EventListProps
               </>
             ) : (
               <>
-                <p><strong>Lokacija:</strong> {event.location}</p>
-                <p><strong>Datum:</strong> {new Date(event.dateOfEvent).toLocaleDateString()}</p>
-                <p><strong>Vreme:</strong> {event.timeOfEvent?.slice(11, 16) ? event.timeOfEvent?.slice(11, 16) : ""}</p>
+                <p><strong>Lokacija:</strong> {event.location || 'Nije unesena lokacija'}</p>
+                <p><strong>Datum:</strong> {event.dateOfEvent ? new Date(event.dateOfEvent).toLocaleDateString() : 'Nije unesen datum'}</p>
+                <p><strong>Vreme:</strong> {event.timeOfEvent || '00:00'}</p>
+
               </>
             )}
           </CardContent>

@@ -81,26 +81,6 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
           <CardContent className="p-4 sm:p-6">
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
-                <User className="mr-2" size={24} />
-                Kratka biografija
-              </h2>
-              <p className="text-gray-700 text-sm sm:text-base">{profile?.text || 'No bio available'}</p>
-            </section>
-
-            <Separator className="my-4 sm:my-6" />
-
-            <section className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
-                <Church className="mr-2" size={24} />
-                Religija
-              </h2>
-              <p className="text-gray-700 text-sm sm:text-base">{profile?.religion || 'No religion provided'}</p>
-            </section>
-
-            <Separator className="my-4 sm:my-6" />
-
-            <section className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Book className="mr-2" size={24} />
                 Biografija
               </h2>

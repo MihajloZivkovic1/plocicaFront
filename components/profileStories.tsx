@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { PlusCircle, ChevronDown, ChevronUp } from 'lucide-react'
+import { PlusCircle, Trash2, ChevronDown, ChevronUp } from 'lucide-react'
 import { StoryWalkthrough } from '@/components/ui/StoryWalkthrough'
 import { StoryList } from '@/components/ui/StoryList'
 
@@ -22,7 +22,9 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
   const [isCreating, setIsCreating] = useState(false);
   const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false);
 
-
+  useEffect(() => {
+    fetchStories();
+  }, [id]);
 
   const fetchStories = async () => {
     try {
@@ -34,9 +36,6 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
     }
   };
 
-  useEffect(() => {
-    fetchStories();
-  }, [fetchStories, id]);
   const addNewStory = async () => {
     try {
       const response = await fetch(`https://plocicaapi.onrender.com/stories/create/${id}`, {
