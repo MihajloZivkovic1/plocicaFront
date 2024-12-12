@@ -1,14 +1,14 @@
 
 import React from 'react'
-import Image from 'next/image'
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import StoryModal from '@/components/ui/modal'
-import { Book, Calendar, Image as ImageIcon, BookOpen, Film } from 'lucide-react'
+import { Book, Calendar, BookOpen, MapPin } from 'lucide-react'
 import { fetchMedia } from '@/app/lib/fetchMedia'
+import InteractiveImage from '@/components/ui/InteractiveImage'
+import { Gallery } from '@/components/ui/Gallery'
 
 
 interface MediaItem {
@@ -26,6 +26,7 @@ interface Event {
   title: string;
   location: string;
   dateOfEvent: string;
+  timeOfEvent: string
 }
 
 async function fetchProfileData(qrCode: string) {
@@ -43,6 +44,8 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
   const stories = profile.Stories || []
   const events = profile.Events || []
 
+
+
   const media = await fetchMedia(profile.id);
   const mediaArray = media.media
   console.log(mediaArray);
@@ -57,34 +60,67 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
     }).replace(/\//g, "/")
   }
 
+  const formatTime = (time: string) => {
+    return new Date(time).toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="relative mb-4">
-        <Image
-          src={profile?.photo ?? '/avatarmenwoman.jpg'}
-          alt={profile?.profileName || 'Profile photo'}
-          width={1000}
-          height={562}
-          layout="responsive"
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex items-end">
-          <div className="p-4 text-white">
-            <h1 className="text-2xl sm:text-4xl font-bold mb-2">{profile?.profileName || 'No Profile Name'}</h1>
-            <p className="text-lg sm:text-xl">{`${formatDate(profile.dateOfBirth)} - ${formatDate(profile.dateOfDeath)}`}</p>
-          </div>
-        </div>
-      </div>
+
+      <InteractiveImage profile={profile} />
+
+
 
       <div className="px-4 sm:px-6 lg:px-8 max-w-4xl mx-auto">
         <Card className="mb-6">
           <CardContent className="p-4 sm:p-6">
             <section className="mb-6">
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
+                <MapPin className="mr-2" size={24} />
+                Mesto Rođenja
+              </h2>
+              <div className="space-y-2">
+                <p className="text-lg sm:text-base flex items-center">
+                  <Calendar className="mr-2" size={20} />
+                  {formatDate(profile.dateOfBirth)}
+                </p>
+                <p className="text-lg sm:text-base flex items-center">
+                  <MapPin className="mr-2" size={20} />
+                  {profile.placeOfBirth}
+                </p>
+              </div>
+            </section>
+
+
+            <Separator className="my-4 sm:my-6" />
+
+            <section className="mb-6">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
+                <MapPin className="mr-2" size={24} />
+                Mesto Smrti
+              </h2>
+              <div className="space-y-2">
+                <p className="text-lg sm:text-base flex items-center">
+                  <Calendar className="mr-2" size={20} />
+                  {formatDate(profile.dateOfDeath)}
+                </p>
+                <p className="text-lg sm:text-base flex items-center">
+                  <MapPin className="mr-2" size={20} />
+                  {profile.placeOfDeath}
+                </p>
+              </div>
+            </section>
+
+            <Separator className="my-4 sm:my-6" />
+            <section className="mb-6">
+              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <Book className="mr-2" size={24} />
                 Biografija
               </h2>
-              <div className="prose max-w-none text-sm sm:text-base">
+              <div className="prose max-w-none text-lg sm:text-base">
                 <ReactMarkdown rehypePlugins={[rehypeRaw]}>
                   {profile?.bio || 'No detailed biography available'}
                 </ReactMarkdown>
@@ -102,9 +138,10 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                 {events.map((event: Event, index: number) => (
                   <Card key={index}>
                     <CardContent className="p-3 sm:p-4">
-                      <h3 className="text-base sm:text-lg font-semibold">{event.title}</h3>
-                      <p className="text-xs sm:text-sm text-gray-600">{formatDate(event.dateOfEvent)}</p>
-                      <p className="text-xs sm:text-sm text-gray-600">{event.location}</p>
+                      <h3 className="text-lg sm:text-lg font-semibold">{event.title}</h3>
+                      <p className="text-lg sm:text-lg text-gray-600">{formatDate(event.dateOfEvent)}</p>
+                      <p className="text-lg sm:text-lg text-gray-600">{event.location}</p>
+                      <p className="text-lg sm:text-lg text-gray-600">{formatTime(event.timeOfEvent)}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -113,58 +150,8 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
 
             <Separator className="my-4 sm:my-6" />
 
-            <section className="mb-6">
-              <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
-                <ImageIcon className="mr-2" size={24} />
-                Galerija
-              </h2>
-              {images.length > 0 && (
-                <>
-                  <h3 className="text-lg font-semibold mb-2">Slike</h3>
-                  <ScrollArea className="h-48 sm:h-72">
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-4">
-                      {images.map((image: MediaItem, index: number) => (
-                        <div key={image.id}
-                          className="aspect-square relative"
-                        >
-                          <Image
-                            src={image.url}
-                            alt={`Gallery image ${index + 1}`}
-                            layout="fill"
-                            objectFit="cover"
-                            className="rounded-lg"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </>
-              )}
-              {videos.length > 0 && (
-                <>
-                  <h3 className="text-lg font-semibold mb-2 mt-4 flex items-center">
-                    <Film className="mr-2" size={20} />
-                    Video
-                  </h3>
-                  <ScrollArea className="h-48 sm:h-72">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4">
-                      {videos.map((video: MediaItem) => (
-                        <div key={video.id} className="aspect-video relative">
-                          <video
-                            src={video.url}
-                            controls
-                            className="w-full h-full rounded-lg"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </ScrollArea>
-                </>
-              )}
-              {images.length === 0 && videos.length === 0 && (
-                <p className="text-gray-500">Nema Slika</p>
-              )}
-            </section>
+            <Gallery images={images} videos={videos} />
+
 
             <Separator className="my-4 sm:my-6" />
 

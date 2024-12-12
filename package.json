@@ -27,6 +27,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "crypto-js": "^4.2.0",
+    "dayjs": "^1.11.13",
     "jose": "^5.9.6",
     "lucide-react": "^0.453.0",
     "md-editor-rt": "^4.21.2",

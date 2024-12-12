@@ -1,33 +1,44 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Button } from './ui/button';
-import Image from "next/image"
+'use client'
+
+import React, { useState, useEffect, useRef } from 'react'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { Upload } from 'lucide-react'
+
+import { PhotoGallery } from './PhotoGallery'
+
 interface Media {
-  id: string;
-  url: string;
+  id: string
+  url: string
   fileName: string
 }
+
 export default function ProfileMedia({ id }: { id: string | undefined }) {
-  const [media, setMedia] = useState<Media[]>([]);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  console.log(selectedFile);
+  const [media, setMedia] = useState<Media[]>([])
+  const [isUploading, setIsUploading] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { toast } = useToast()
+
   useEffect(() => {
-    const fetchMedia = async () => {
-      try {
-        const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`);
-        const data = await response.json();
-        const mediaArray = data.media;
-        if (Array.isArray(mediaArray)) {
-          setMedia(mediaArray);
-        } else {
-          setMedia([]);
-        }
-      } catch (error) {
-        console.error("Error fetching media", error);
+    fetchMedia()
+  }, [id])
+
+  const fetchMedia = async () => {
+    if (!id) return
+    try {
+      const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`)
+      const data = await response.json()
+      const mediaArray = data.media
+      if (Array.isArray(mediaArray)) {
+        setMedia(mediaArray)
+      } else {
+        setMedia([])
       }
-    };
-    fetchMedia();
-  }, [id]);
+    } catch (error) {
+      console.error("Error fetching media", error)
+      showToast("Error fetching media", "error")
+    }
+  }
 
   const deleteMedia = async (mediaId: string) => {
     try {
@@ -35,112 +46,92 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mediaId: mediaId })
-      });
+      })
 
       if (response.ok) {
-        setMedia((prevMedia) => prevMedia.filter((media) => media.id !== mediaId));
-        console.log("Uspešno obrisana slika");
+        setMedia((prevMedia) => prevMedia.filter((media) => media.id !== mediaId))
+        showToast("Photo deleted successfully", "success")
       } else {
-        console.error("Failed to delete media");
+        showToast("Failed to delete photo", "error")
       }
     } catch (error) {
-      console.error("Error deleting media", error);
+      console.error("Error deleting media", error)
+      showToast("Error deleting photo", "error")
     }
-  };
+  }
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    console.log(file);
+    const file = event.target.files?.[0]
     if (file && id) {
-      setSelectedFile(file);
-      const formData = new FormData();
-      formData.append('media', file);
-      formData.append('profileId', id);
+      setIsUploading(true)
+      const formData = new FormData()
+      formData.append('media', file)
+      formData.append('profileId', id)
       formData.append('mediaType', "photo")
+      formData.append('timestamp', Date.now().toString())
+
       try {
         const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`, {
           method: 'POST',
           body: formData,
-        });
+        })
 
         if (response.ok) {
-          const newMedia = await response.json();
-          console.log(newMedia);
-          setMedia((prevMedia) => [...prevMedia, newMedia.media]);
-          setSelectedFile(null);
-          console.log("Uspešno postavljena slika");
+          const newMedia = await response.json()
+          setMedia((prevMedia) => [...prevMedia, newMedia.media])
+          showToast("Photo uploaded successfully", "success")
         } else {
-          console.error("Failed to upload photo");
+          showToast("Failed to upload photo", "error")
         }
       } catch (error) {
-        console.error("Error uploading photo", error);
+        console.error("Error uploading photo", error)
+        showToast("Error uploading photo", "error")
+      } finally {
+        setIsUploading(false)
+        if (fileInputRef.current) {
+          fileInputRef.current.value = ''
+        }
       }
     }
-
-  };
+  }
 
   const handleButtonClick = () => {
-    fileInputRef.current?.click();
-  };
+    fileInputRef.current?.click()
+  }
 
-  // const uploadPhoto = async () => {
-  //   if (!selectedFile || !id) return;
-
-
-  // };
+  const showToast = (message: string, type: 'success' | 'error') => {
+    toast({
+      title: type === 'success' ? 'Success' : 'Error',
+      description: message,
+      variant: type === 'success' ? 'default' : 'destructive',
+    })
+  }
 
   return (
-    <div>
-      <div className="flex justify-evenly">
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Slike</h1>
-        <form>
-          <Button onClick={handleButtonClick} type="button">
-            Dodajte Sliku
-          </Button>
-          <input
-            type="file"
-            name="profilePhoto"
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
-            accept="image/*"
-          />
-        </form>
+        <Button onClick={handleButtonClick} disabled={isUploading}>
+          {isUploading ? (
+            "Uploading..."
+          ) : (
+            <>
+              <Upload className="w-4 h-4 mr-2" />
+              Dodajte Sliku
+            </>
+          )}
+        </Button>
+        <input
+          type="file"
+          name="profilePhoto"
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+          accept="image/*"
+        />
       </div>
 
-      {/* {selectedFile && (
-        <div className="mt-4">
-          <p>Selected file: {selectedFile.name}</p>
-          <Button onClick={uploadPhoto} className="mt-2">Submit Upload</Button>
-        </div>
-      )} */}
-
-      <div className="space-y-4 mt-4 flex flex-col-reverse p-4">
-        {media.length === 0 ? (
-          <p>No media available</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {media.map((photo, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg">
-                <div className="relative w-full pb-[100%] bg-gray-100">
-                  <Image
-                    src={photo.url}
-                    alt={photo.fileName}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    priority
-                    className="rounded-t-lg"
-                  />
-                </div>
-                <div className="p-2 text-center">
-                  <Button onClick={() => deleteMedia(photo.id)} className="mt-2">Obrišite Sliku</Button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+      <PhotoGallery media={media} onDelete={deleteMedia} />
     </div>
-  );
+  )
 }

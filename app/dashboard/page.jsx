@@ -57,7 +57,7 @@ export default async function Dashboard() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-2">
-                  <Link href={`/profiles/${profile.qrCode}`} className="w-full">
+                  <Link href={`/preview-profile/${profile.qrCode}`} className="w-full">
                     <Button variant="outline" className="w-full">
                       <EyeIcon className="w-4 h-4 mr-2" />
                       Pogledajte Profil
