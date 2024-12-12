@@ -34,7 +34,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "app/profiles/layout.tsx",
-    "components/ui/modal.tsx"
+    "components/ui/modal.tsx",
+    "app/preview-profile/[qrCode]/page.jsx"
   ],
   "exclude": [
     "node_modules"

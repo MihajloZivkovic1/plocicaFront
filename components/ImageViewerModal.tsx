@@ -1,33 +1,33 @@
-import React from 'react'
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import Image from "next/image"
-import { Dialog, DialogContent } from "@/components/ui/dialog"
-import { X } from 'lucide-react'
 
-interface ImageViewerModalProps {
-  isOpen: boolean,
-  onClose: () => void,
-  imageUrl: string
+interface ImagePreviewModalProps {
+  isOpen: boolean
+  onClose: () => void
+  imageUrl: string | null // Allow null to handle missing images
 }
-export default function ImageViewerModal({ isOpen, onClose, imageUrl }: ImageViewerModalProps) {
 
+export function ImageViewerModal({ isOpen, onClose, imageUrl }: ImagePreviewModalProps) {
   return (
-    <div>
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className='sm:max-w-[90vw] sm:max-h-[90vh] p-0'>
-          <button onClick={onClose} className='absolute right-2 top-2 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'>
-            <X className="h-4 w-4" />
-            <span className="sr-only">Close</span>
-          </button>
-          <div className="relative w-full h-[90vh]">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-3xl w-full p-0">
+        <DialogTitle className="sr-only">Image Preview</DialogTitle>
+        <div className="relative aspect-square w-full">
+          {imageUrl ? (
             <Image
               src={imageUrl}
-              alt="Enlarged view"
+              alt="Preview"
               layout="fill"
               objectFit="contain"
+              className="rounded-lg"
             />
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+          ) : (
+            <div className="flex items-center justify-center h-full text-gray-500">
+              No image available
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
   )
 }
