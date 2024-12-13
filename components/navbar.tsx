@@ -1,48 +1,49 @@
 'use client'
+
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-// import { NextResponse } from "next/server";
-import { UserRoundPen } from "lucide-react";
+import { UserRoundIcon as UserRoundPen, Home, Phone, ShoppingCart, Menu, X } from 'lucide-react';
 
 export function Navbar({ session }: NavbarProps) {
-  console.log("Session", session);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const loggedIn = Boolean(session?.user?.user?.id);
-    console.log(loggedIn);
     setIsLoggedIn(loggedIn);
   }, [session]);
-  const [isOpen, setIsOpen] = useState(false);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-  const classNameForLinks = "font-medium text-sm transition-colors hover:underline text-gray-800 dark:text-gray-200"
+
+  const classNameForLinks = "font-medium text-sm transition-colors hover:text-primary dark:hover:text-primary-foreground flex items-center gap-2";
+
   return (
     <nav className="fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90">
       <div className="w-full max-w-7xl mx-auto px-4">
-        <div className="flex justify-between min-h-[56px] items-center gap-4">
+        <div className="flex justify-between min-h-[64px] items-center gap-4">
           {/* Logo */}
-          <Link href={"/"}>
-            <h1 className="font-black">MemoryPlate</h1>
+          <Link href="/" className="font-black text-xl">
+            MemoryPlate
           </Link>
-          <Link href="/dashboard" className="flex items-center" prefetch={false}>
-            <UserRoundPen className="h-6 w-6" />
-          </Link>
+
           {/* Mobile menu toggle button */}
           <button onClick={toggleMenu} className="md:hidden text-gray-800 dark:text-gray-200 focus:outline-none">
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
+            <Menu className="w-6 h-6" />
           </button>
 
           {/* Desktop Menu */}
-          <nav className="hidden md:flex gap-4 flex justify-center items-center">
-            <NavLink href="/" label="Početna" className={classNameForLinks} />
-            <NavLink href="/contact" label="Kontakt" className={classNameForLinks} />
-            <NavLink href="/dashboard" label="Moje Pločice" className={classNameForLinks} />
-            <NavLink href="/order-now" label="Poruči Pločicu" className={classNameForLinks} />
+          <nav className="hidden md:flex gap-6 items-center">
+            <NavLink href="/" label="Početna" icon={<Home className="w-5 h-5" />} className={classNameForLinks} />
+            <NavLink href="/contact" label="Kontakt" icon={<Phone className="w-5 h-5" />} className={classNameForLinks} />
+            <NavLink href="/dashboard" label="Moje Pločice" icon={
+              <div className="bg-black rounded-full p-1">
+                <UserRoundPen className="w-5 h-5 text-white" />
+              </div>
+            } className={classNameForLinks} />
+            <NavLink href="/order-now" label="Poruči Pločicu" icon={<ShoppingCart className="w-5 h-5" />} className={classNameForLinks} />
 
             {isLoggedIn ? (
               <form action="/api/auth/logout" method="POST">
@@ -57,43 +58,32 @@ export function Navbar({ session }: NavbarProps) {
                 </Button>
               </Link>
             )}
-
           </nav>
-          {/* Desktop Menu */}
-          {/* <nav className="hidden md:flex gap-4">
-            <NavLink href="/" label="Home" />
-            <NavLink href="/contact" label="Contact" />
-            <NavLink href="/dashboard" label="Dashboard" />
-          </nav> */}
-
-          {/* Sign-in button */}
-
         </div>
       </div>
 
-      {/* Sidebar for Mobile */}
       {/* Sidebar for Mobile */}
       {isOpen && (
         <div className="fixed inset-0 z-40 bg-black bg-opacity-50 md:hidden">
           <div className="absolute top-0 left-0 w-3/4 max-w-xs h-full bg-white dark:bg-gray-900 p-6 shadow-lg">
             <button onClick={toggleMenu} className="text-gray-800 dark:text-gray-200 mb-6 focus:outline-none">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-6 h-6" />
             </button>
             <nav className="flex flex-col space-y-4">
-              <NavLink href="/" label="Početna" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/contact" label="Kontakt" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/dashboard" label="Moje Pločice" onClick={toggleMenu} className={classNameForLinks} />
-              <NavLink href="/order-now" label="Poruči Pločicu" onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/" label="Početna" icon={<Home className="w-5 h-5" />} onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/contact" label="Kontakt" icon={<Phone className="w-5 h-5" />} onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/dashboard" label="Moje Pločice" icon={
+                <div className="bg-black rounded-full p-1">
+                  <UserRoundPen className="w-5 h-5 text-white" />
+                </div>
+              } onClick={toggleMenu} className={classNameForLinks} />
+              <NavLink href="/order-now" label="Poruči Pločicu" icon={<ShoppingCart className="w-5 h-5" />} onClick={toggleMenu} className={classNameForLinks} />
 
               {isLoggedIn ? (
                 <form
                   action="/api/auth/logout"
                   method="POST"
-                  onSubmit={() =>
-                    toggleMenu
-                  }
+                  onSubmit={toggleMenu}
                 >
                   <Button type="submit" variant="outline" size="sm">
                     Izloguj se
@@ -109,19 +99,19 @@ export function Navbar({ session }: NavbarProps) {
             </nav>
           </div>
         </div>
-      )
-      }
-
-    </nav >
+      )}
+    </nav>
   );
 }
 
 interface NavLinkProps {
   href: string;
   label: string;
+  icon: React.ReactNode;
   onClick?: () => void;
   className: string;
 }
+
 interface NavbarProps {
   session: {
     user: {
@@ -134,9 +124,11 @@ interface NavbarProps {
     }
   } | null
 }
-const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick, className }) => (
+
+const NavLink: React.FC<NavLinkProps> = ({ href, label, icon, onClick, className }) => (
   <Link href={href} onClick={onClick} className={className}>
+    {icon}
     {label}
-  </Link >
+  </Link>
 );
 
