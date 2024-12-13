@@ -11,12 +11,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent } from '@/components/ui/collapsible';
 import { CollapsibleTrigger } from '@radix-ui/react-collapsible';
 import { useRouter } from 'next/navigation';
+import { BioWalkthrough } from '@/components/ui/BioWalkthrough';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 export default function BioEdit({ id }: { id: string | undefined }) {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const router = useRouter();
+
+  const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false)
+
 
   const [text, setText] = useState('');
   const { toast } = useToast()
@@ -80,26 +85,24 @@ export default function BioEdit({ id }: { id: string | undefined }) {
 
   return (
     <>
-      <Collapsible className="grid">
+      <Collapsible
+        open={isWalkthroughOpen}
+        onOpenChange={setIsWalkthroughOpen}
+        className="w-full"
+      >
         <CollapsibleTrigger asChild>
-          <Button className="w-full justify-start text-left font-semibold">
-            Kako da uredim biografiju pokojnika?
+          <Button variant="outline" className="flex items-center justify-between w-full">
+            <span>Šta je biografija i kako da je unesem?</span>
+            {isWalkthroughOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </Button>
         </CollapsibleTrigger>
-        <CollapsibleContent asChild>
-          <p className="text-sm leading-loose text-gray-500 md:text-base dark:text-gray-400">
-            Na stranici za uređivanje biografije pokojnika, dostupno je polje za uredjivanje teksta:
-            <br />
-            <strong>1. Tekst:</strong> Kliknite na postojeći tekstualni editor da biste je izmenili ili dodali novu biografiju. U tekst editoru je moguće podebljati ili podvuci tekst.
-            <br />
-            <strong>2. Dugme za čuvanje biografije:</strong> Kliknite na dugme <em>Sačuvaj biografiju</em> da biste sačuvali izmene i prešli na uređivanje pomena za pokojnika.
-            <br />
-          </p>
+        <CollapsibleContent className="mt-2">
+          <BioWalkthrough />
         </CollapsibleContent>
       </Collapsible>
 
 
-      <Card className="w-full max-w-3xl mx-auto mt-2">
+      <Card className="w-full max-w-3xl mx-auto mt-6">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Uredi Biografiju</CardTitle>
         </CardHeader>
