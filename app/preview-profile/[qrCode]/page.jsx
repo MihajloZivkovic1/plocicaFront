@@ -37,12 +37,12 @@ export default function PreviewProfilePage({ params: paramsPromise }) {
         <CardContent>
           <ProfileData qrCode={qrCode} />
         </CardContent>
-        <Link href="/dashboard" passHref>
-          <Button variant="outline" size="lg" className="mb-6 w-full sm:w-auto">
-            <ArrowLeft className="mr-2 h-6 w-6" /> Back to Dashboard
-          </Button>
-        </Link>
       </Card>
+      <Link href="/dashboard" passHref>
+        <Button variant="outline" size="lg" className="mb-6 w-full sm:w-auto mt-4">
+          <ArrowLeft className="mr-2 h-6 w-6" /> Back to Dashboard
+        </Button>
+      </Link>
     </div>
   );
 }

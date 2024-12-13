@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import { useRouter } from "next/navigation"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import { BioWalkthrough } from '@/components/ui/GeneralWalktrough';
 
 type Profile = {
   profile: {
@@ -30,6 +32,8 @@ export default function GeneralEdit({ id }: { id: string }) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [isWalkthroughOpen, setIsWalkthroughOpen] = useState(false)
+
   const router = useRouter();
   const [errors, setErrors] = useState({
     profileName: "",
@@ -240,30 +244,23 @@ export default function GeneralEdit({ id }: { id: string }) {
 
   return (
     <>
-      <Collapsible className="grid">
+      <Collapsible
+        open={isWalkthroughOpen}
+        onOpenChange={setIsWalkthroughOpen}
+        className="w-full"
+      >
         <CollapsibleTrigger asChild>
-          <Button className="w-full justify-start text-left font-semibold">
-            Kako da uredim profil pokojnika?
+          <Button variant="outline" className="flex items-center justify-between w-full">
+            <span>Šta da uredim profil pokojnika?</span>
+            {isWalkthroughOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </Button>
         </CollapsibleTrigger>
-        <CollapsibleContent asChild>
-          <p className="text-sm leading-loose text-gray-500 md:text-base dark:text-gray-400">
-            Na stranici za uređivanje profila pokojnika, dostupna su sledeća polja za unos i izmene:
-            <br />
-            <strong>1. Fotografija:</strong> Kliknite na postojeću fotografiju da biste je izmenili ili dodali novu.
-            <br />
-            <strong>2. Ime i Prezime:</strong> Unesite ili izmenite ime i prezime pokojnika.
-            <br />
-            <strong>3. Datumi rođenja i smrti:</strong> Unesite datume u formatu (npr. DD.MM.GGGG).
-            <br />
-            <strong>4. Mesto rođenja i mesto smrti:</strong> Unesite lokaciju rođenja i lokaciju smrti.
-            <br />
-            <strong>5. Dugme za čuvanje podataka:</strong> Kliknite na dugme <em>Sačuvaj izmene na profilu</em> da biste sačuvali izmene i prešli na uređivanje biografije pokojnika.
-          </p>
+        <CollapsibleContent className="mt-2">
+          <BioWalkthrough />
         </CollapsibleContent>
       </Collapsible>
 
-      <Card className="w-full max-w-2xl mx-auto mt-2">
+      <Card className="w-full max-w-2xl mx-auto mt-6">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Uredjuj Profil</CardTitle>
         </CardHeader>
