@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -10,11 +10,10 @@ import { useToast } from "@/hooks/use-toast"
 import Link from 'next/link'
 
 interface Country {
-  cca2: string;
-  name: {
-    common: string;
-  };
+  code: string;
+  name: string;
 }
+
 interface FormData {
   country: string;
   email: string;
@@ -27,7 +26,6 @@ interface FormData {
 
 export default function OrderNow() {
   const router = useRouter()
-  const [countries, setCountries] = useState<Country[]>([]);
   const [formData, setFormData] = useState<FormData>({
     country: '',
     email: '',
@@ -41,37 +39,12 @@ export default function OrderNow() {
 
   const { toast } = useToast()
 
-  useEffect(() => {
-    const fetchCountries = async () => {
-      try {
-        const response = await fetch("https://restcountries.com/v3.1/all", {
-          mode: "cors",
-          headers: {
-            Accept: "application/json",
-          }
-        })
-        const data = await response.json()
-        const sortedCountries = data.sort((a: Country, b: Country) => a.name.common.localeCompare(b.name.common))
-        setCountries(sortedCountries)
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          console.error("Error fetching countries:", error.message);
-          toast({
-            title: "Error",
-            description: `Failed to fetch countries: ${error.message}`,
-            variant: "destructive",
-          });
-        }
-      }
-    }
-    const timer = setTimeout(() => {
-      fetchCountries()
-      console.log()
-    }, 500)
-
-    return () => clearTimeout(timer);
-
-  }, [toast])
+  const countries: Country[] = [
+    { code: 'RS', name: 'Serbia' },
+    { code: 'BA', name: 'Bosnia' },
+    { code: 'AT', name: 'Austria' },
+    { code: 'DE', name: 'Germany' },
+  ]
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target
@@ -138,8 +111,8 @@ export default function OrderNow() {
             </SelectTrigger>
             <SelectContent>
               {countries.map((country: Country) => (
-                <SelectItem key={country.cca2} value={country.name.common}>
-                  {country.name.common}
+                <SelectItem key={country.code} value={country.name}>
+                  {country.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -171,7 +144,7 @@ export default function OrderNow() {
         <legend className="sr-only">Adresa za isporuku</legend>
         <h2 className="text-lg font-semibold mb-2">Adresa za isporuku</h2>
         <p className="text-sm text-gray-500 mb-4">Unesite adresu za isporuku</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="billing-firstName" className="block text-sm font-medium text-gray-700">Vaše ime</label>
             <Input
@@ -198,7 +171,7 @@ export default function OrderNow() {
             />
             {errors.lastName && <p className="mt-1 text-sm text-red-600">{errors.lastName}</p>}
           </div>
-          <div className="col-span-2">
+          <div className="sm:col-span-2">
             <label htmlFor="billing-address" className="block text-sm font-medium text-gray-700">Adresa</label>
             <Input
               id="billing-address"
@@ -281,7 +254,7 @@ export default function OrderNow() {
         </p>
       </div>
 
-      <div className="flex justify-between items-center">
+      <div className="flex flex-row sm:flex-row justify-between items-center gap-4">
         <Link href="/" className="text-sm text-black-600 hover:underline flex items-center space-x-2">
           <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
             <path d="M20 11.2H6.8l3.7-3.7-1-1L3.9 12l5.6 5.5 1-1-3.7-3.7H20z" />
