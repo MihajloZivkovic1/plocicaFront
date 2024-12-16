@@ -84,7 +84,7 @@ export default function ContactPage() {
               </div>
               <div className="flex items-center space-x-3">
                 <MapPin className="text-primary" />
-                <span>Bulevar Oslobođenja 123, 21000 Novi Sad</span>
+                <span>Pinkijeva 23, 22330 Nova Pazova</span>
               </div>
             </CardContent>
           </Card>
