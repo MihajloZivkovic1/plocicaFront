@@ -26,12 +26,15 @@ export default function InteractiveImage({ profile }: { profile: Profile }) {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const uuid = self.crypto.randomUUID();
+
   return (
     <div
       className={`relative mb-4 transition-all duration-300 ${scrolled ? "border-4 rounded-b-[9%]" : ""
         }`}
     >
       <Image
+        key={uuid}
         src={profile?.photo ?? "/avatarmenwoman.jpg"}
         alt={profile?.profileName || "Profile photo"}
         width={1000}

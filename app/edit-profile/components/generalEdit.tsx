@@ -208,6 +208,8 @@ export default function GeneralEdit({ id }: { id: string }) {
     try {
       const formData = new FormData();
       formData.append('profileImage', file);
+      formData.append('timestamp', Date.now().toString());
+
 
       const response = await fetch(`https://plocicaapi.onrender.com/profiles/edit/${id}`, {
         method: 'PUT',
