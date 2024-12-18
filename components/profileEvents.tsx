@@ -38,6 +38,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
 
 
+  console.log(events);
 
   const fetchEvents = async () => {
     try {
@@ -49,9 +50,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           ...event,
           dateOfEvent: event.dateOfEvent.split('T')[0],
           timeOfEvent: event.timeOfEvent.split('T')[1]?.slice(0, 5) || '00:00', // Extract HH:mm
-
         })))
-
       } else {
         setEvents([])
       }
@@ -72,50 +71,57 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
 
   const addNewEvent = async () => {
-    const formattedTime = newEvent.time.includes(":") && newEvent.time.split(":").length === 2 ? `${newEvent.time}:00` : newEvent.time;
-    const formattedDate = "2024-02-01"; // Dummy date for time parsing
+    const formattedTime = newEvent.time.includes(":") && newEvent.time.split(":").length === 2
+      ? `${newEvent.time}:00`
+      : newEvent.time;
+    const formattedDate = newEvent.date; // Keep the original date from the form
 
     if (!newEvent.title || !newEvent.date || !newEvent.time) {
       toast({
         title: "Greška",
         description: "Sva polja moraju biti popunjena.",
         variant: "destructive",
-      })
-      return
+      });
+      return;
     }
 
     try {
       const response = await fetch(`https://plocicaapi.onrender.com/events/create/${id}`, {
         method: "POST",
         headers: {
-          'Content-type': 'application/json'
+          "Content-type": "application/json",
         },
         body: JSON.stringify({
           profileId: id,
           title: newEvent.title,
-          location: newEvent.location || 'Unesite Lokaciju',
-          dateOfEvent: newEvent.date ? new Date(newEvent.date).toISOString() : "",
-          timeOfEvent: new Date(`${formattedDate}T${formattedTime}`).toISOString(), // Save as ISO for backend
+          location: newEvent.location || "Unesite Lokaciju",
+          dateOfEvent: newEvent.date,
+          timeOfEvent: `${formattedDate}T${formattedTime}`,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create new event');
+        throw new Error("Failed to create new event");
       }
 
       const createdEvent = await response.json();
+      console.log(createdEvent.event.timeOfEvent);
+      const isoTime = createdEvent.event.timeOfEvent;
+      const timeOfEvent = isoTime.split("T")[1].slice(0, 5);
+
+
       const normalizedEvent = {
         ...createdEvent.event,
-        dateOfEvent: createdEvent.event.dateOfEvent.split('T')[0],
-        timeOfEvent: new Date(createdEvent.event.timeOfEvent).toLocaleTimeString([], {
-          hour: '2-digit',
-          minute: '2-digit'
-        }),
+        dateOfEvent: createdEvent.event.dateOfEvent.split("T")[0],
+        timeOfEvent: timeOfEvent
       };
+
+      console.log('createdEvent:', createdEvent)
+      console.log('normalizedEvent:', normalizedEvent)
+
       setEvents((prevEvents) => [normalizedEvent, ...prevEvents]);
       setNewEvent({ title: "", location: "", date: "", time: "" });
       setIsCreating(false);
-
       toast({
         title: "Uspeh",
         description: "Uspešno ste dodali novi Pomen!",
@@ -129,6 +135,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       });
     }
   };
+
 
 
   const deleteEvent = async (eventId: string) => {
