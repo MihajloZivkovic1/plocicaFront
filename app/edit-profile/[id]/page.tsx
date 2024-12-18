@@ -76,7 +76,7 @@ export default function EditProfile() {
 
   return (
     <div className="container mx-auto px-4 mt-16">
-      <nav className="overflow-x-auto whitespace-nowrap pb-2 mb-4">
+      <nav className="overflow-x-auto whitespace-nowrap pb-2 mb-4 pt-1">
         <div className="inline-flex space-x-2">
           {tabs.map((item) => (
             <Link
