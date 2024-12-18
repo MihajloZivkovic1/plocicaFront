@@ -106,7 +106,6 @@ export default function GeneralEdit({ id }: { id: string }) {
       reader.onload = () => setPreviewImage(reader.result as string);
       reader.readAsDataURL(file);
 
-
       await handleSaveImage(file);
     }
   };
@@ -232,6 +231,7 @@ export default function GeneralEdit({ id }: { id: string }) {
       })
     }
   };
+  const uuid = self.crypto.randomUUID();
 
   const formatDateForInput = (date: string | null) => {
     if (!date) return "";
@@ -275,6 +275,7 @@ export default function GeneralEdit({ id }: { id: string }) {
                 Dodaj Sliku
               </Button>
               <input
+                key={uuid}
                 type="file"
                 name='profilePhoto'
                 ref={fileInputRef}
