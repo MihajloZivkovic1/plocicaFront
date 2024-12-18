@@ -74,13 +74,12 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
       formData.append('mediaType', 'photo');
       formData.append('timestamp', Date.now().toString());
 
-
       try {
         const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`, {
           method: 'POST',
           body: formData,
         });
-
+        console.log(response.formData);
         if (response.ok) {
           const newMedia = await response.json();
           setMedia((prevMedia) => [...prevMedia, newMedia.media]);
@@ -135,7 +134,6 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
           onChange={handleFileChange}
           style={{ display: 'none' }}
           accept="image/*"
-          capture="environment"
         />
       </div>
 
