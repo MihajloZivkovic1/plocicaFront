@@ -158,7 +158,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
             <section>
               <h2 className="text-xl sm:text-2xl font-semibold mb-2 flex items-center">
                 <BookOpen className="mr-2" size={24} />
-                Zanimljive Priče
+                Priče,Anegdote,Secanja
               </h2>
               <div className="space-y-4">
                 {stories.map((story: Story, index: number) => (
