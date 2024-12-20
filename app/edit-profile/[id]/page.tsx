@@ -8,6 +8,7 @@ import BioEdit from "../components/bioEdit";
 import EventsEdit from "../components/eventsEdit";
 import StoriesEdit from "../components/storiesEdit";
 import MediaEdit from "../components/mediaEdit";
+import LinksEdit from "../components/LinksEdit"
 
 type Profile = {
   id: number;
@@ -69,9 +70,10 @@ export default function EditProfile() {
   const tabs = [
     { name: 'Generalno', value: 'general' },
     { name: 'Biografija', value: 'bio' },
-    { name: 'Pomeni', value: 'events' },
-    { name: 'Priče', value: 'stories' },
     { name: 'Slike', value: 'media' },
+    { name: 'Priče', value: 'stories' },
+    { name: 'Secanja na Omiljeno', value: 'links' },
+    { name: 'Pomeni', value: 'events' },
   ];
 
   return (
@@ -95,9 +97,10 @@ export default function EditProfile() {
       <div className="mt-4">
         {tab === 'general' && <GeneralEdit id={id} />}
         {tab === 'bio' && <BioEdit id={id} />}
-        {tab === 'events' && <EventsEdit id={id} />}
-        {tab === 'stories' && <StoriesEdit id={id} />}
         {tab === 'media' && <MediaEdit id={id} />}
+        {tab === 'stories' && <StoriesEdit id={id} />}
+        {tab === 'links' && <LinksEdit id={id} />}
+        {tab === 'events' && <EventsEdit id={id} />}
       </div>
     </div>
   );

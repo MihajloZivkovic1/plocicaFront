@@ -126,8 +126,8 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
       </Collapsible>
 
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-2xl font-bold">Priče</CardTitle>
+        <CardHeader className="flex flex-col items-center justify-between space-y-0 pb-2">
+          <CardTitle className="text-2xl font-bold mb-2">Priče, uspomene i anegdote</CardTitle>
           <Button onClick={() => setIsCreating(true)} disabled={isCreating}>
             <PlusCircle className="mr-2 h-4 w-4" />
             Dodaj novu priču
