@@ -19,9 +19,12 @@ export default function PreviewProfilePage({ params: paramsPromise }) {
 
       <Card className="mb-6">
         <CardHeader className="bg-primary text-primary-foreground">
-          <CardTitle className="text-2xl flex items-center justify-center">
-            <Eye className="mr-2" /> Preview Mode
-          </CardTitle>
+          <Link href={`/profiles/${qrCode}`}>
+            <CardTitle className="text-2xl flex items-center justify-center">
+              <Eye className="mr-2" /> Preview Mode
+            </CardTitle>
+          </Link>
+
         </CardHeader>
         <CardContent className="text-center py-4">
           <p>Ovo je izgled vaseg profila nakog sto skenirate QR plocicu.</p>
