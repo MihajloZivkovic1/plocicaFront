@@ -45,7 +45,7 @@ export default async function Dashboard() {
                 <CardContent className="pt-4">
                   <div className="flex items-center space-x-4 mb-4">
                     <Avatar className="w-16 h-16">
-                      <AvatarImage src={profile.photo || 'https://img.favpng.com/1/15/9/scalable-vector-graphics-computer-icons-user-profile-portable-network-graphics-png-favpng-n05BjRqcBz9Ub9NtAbz8GXEaN.jpg'} />
+                      <AvatarImage src={profile.photo || 'https://img.favpng.com/1/15/9/scalable-vector-graphics-computer-icons-user-profile-portable-network-graphics-png-favpng-n05BjRqcBz9Ub9NtAbz8GXEaN.jpg'} alt='avatar-photo' />
                       <AvatarFallback>{profile.profileName.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
