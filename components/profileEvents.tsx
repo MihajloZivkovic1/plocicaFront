@@ -49,7 +49,6 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
         setEvents(data.map(event => ({
           ...event,
           dateOfEvent: event.dateOfEvent.split('T')[0],
-          timeOfEvent: event.timeOfEvent.split('T')[1]?.slice(0, 5) || '00:00', // Extract HH:mm
         })))
       } else {
         setEvents([])
@@ -74,8 +73,13 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
     const formattedTime = newEvent.time.includes(":") && newEvent.time.split(":").length === 2
       ? `${newEvent.time}:00`
       : newEvent.time;
-    const formattedDate = newEvent.date; // Keep the original date from the form
 
+
+
+    const formattedDate = newEvent.date;
+
+
+    console.log('time to send', newEvent.time);
     if (!newEvent.title || !newEvent.date || !newEvent.time) {
       toast({
         title: "Greška",
@@ -96,7 +100,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
           title: newEvent.title,
           location: newEvent.location || "Unesite Lokaciju",
           dateOfEvent: newEvent.date,
-          timeOfEvent: `${formattedDate}T${formattedTime}`,
+          timeOfEvent: newEvent.time.slice(0, 5),
         }),
       });
 
@@ -105,15 +109,10 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       }
 
       const createdEvent = await response.json();
-      console.log(createdEvent.event.timeOfEvent);
-      const isoTime = createdEvent.event.timeOfEvent;
-      const timeOfEvent = isoTime.split("T")[1].slice(0, 5);
-
 
       const normalizedEvent = {
         ...createdEvent.event,
         dateOfEvent: createdEvent.event.dateOfEvent.split("T")[0],
-        timeOfEvent: timeOfEvent
       };
 
       console.log('createdEvent:', createdEvent)
@@ -173,29 +172,24 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
         body: JSON.stringify({
           profileId: id,
           ...updatedEvent,
-          title: updatedEvent.title || "Unesite Lokaciju",
-          timeOfEvent: updatedEvent.timeOfEvent || "1970-01-01T00:00:00.000Z",
+          timeOfEvent: updatedEvent.timeOfEvent
         })
       });
 
       if (response.ok) {
         const updatedEventData = await response.json();
-        const normalizedEvent = {
-          ...updatedEventData.event,
-          dateOfEvent: updatedEventData.event.dateOfEvent.split('T')[0],
-          timeOfEvent: updatedEventData.event.timeOfEvent.split('T')[1]?.slice(0, 5), // Normalize to HH:mm
-        };
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
-            event.id === eventId ? normalizedEvent : event
+            event.id === eventId ? {
+              ...event,
+              ...updatedEvent
+            } : event
           )
         );
         toast({
           title: "Uspeh",
           description: "Uspešno promenjen Pomen",
         });
-      } else {
-        throw new Error("Failed to update event");
       }
     } catch (error) {
       console.error("Error updating event", error);
@@ -212,62 +206,74 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       <Collapsible
         open={isWalkthroughOpen}
         onOpenChange={setIsWalkthroughOpen}
-        className="w-full"
+        className="w-full bg-white"
       >
         <CollapsibleTrigger asChild>
-          <Button variant="outline" className="flex items-center justify-between w-full">
-            <span>Šta je pomen i kako da ga unesem?</span>
+          <Button variant="outline" className="flex items-center justify-between w-full rounded-lg hover:bg-gray-50">
+            <span className="text-gray-700">Šta je pomen i kako da ga unesem?</span>
             {isWalkthroughOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
           </Button>
         </CollapsibleTrigger>
-        <CollapsibleContent className="mt-2">
+        <CollapsibleContent className="p-4">
           <EventWalkthrough />
         </CollapsibleContent>
       </Collapsible>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-2xl font-bold">Pomeni</CardTitle>
-          <Button onClick={() => setIsCreating(true)} disabled={isCreating}>
+      <Card className="border-0 shadow-md">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4 border-b">
+          <CardTitle className="text-2xl font-bold text-gray-800">Pomeni</CardTitle>
+          <Button
+            onClick={() => setIsCreating(true)}
+            disabled={isCreating}
+            className="bg-blue-500 hover:bg-blue-600"
+          >
             <Plus className="mr-2 h-4 w-4" />
             Dodaj novi pomen
           </Button>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           {isCreating && (
-            <div className="space-y-4 mb-6">
-              <Select
-                onValueChange={(value) => setNewEvent({ ...newEvent, title: value })}
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Izaberite vrstu pomena" />
-                </SelectTrigger>
-                <SelectContent>
-                  {pomeni.map((pomen) => (
-                    <SelectItem key={pomen.id} value={pomen.title}>
-                      {pomen.title}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="space-y-4 mb-6 p-4 bg-gray-50 rounded-lg">
+              <Input
+                placeholder="Naziv pomena"
+                value={newEvent.title}
+                onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
+                className="border-gray-300"
+              />
               <Input
                 placeholder="Lokacija pomena"
                 value={newEvent.location}
                 onChange={(e) => setNewEvent({ ...newEvent, location: e.target.value })}
+                className="border-gray-300"
               />
-              <Input
-                type="date"
-                value={newEvent.date}
-                onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
-              />
-              <Input
-                type="time"
-                value={newEvent.time}
-                onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
-              />
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setIsCreating(false)}>Odustani</Button>
-                <Button onClick={addNewEvent}>Sačuvaj pomen</Button>
+              <div className="grid grid-cols-2 gap-4">
+                <Input
+                  type="date"
+                  value={newEvent.date}
+                  onChange={(e) => setNewEvent({ ...newEvent, date: e.target.value })}
+                  className="border-gray-300"
+                />
+                <Input
+                  type="time"
+                  value={newEvent.time}
+                  onChange={(e) => setNewEvent({ ...newEvent, time: e.target.value })}
+                  className="border-gray-300"
+                />
+              </div>
+              <div className="flex justify-end space-x-2 pt-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsCreating(false)}
+                  className="hover:bg-gray-100"
+                >
+                  Odustani
+                </Button>
+                <Button
+                  onClick={addNewEvent}
+                  className="bg-blue-500 hover:bg-blue-600"
+                >
+                  Sačuvaj pomen
+                </Button>
               </div>
             </div>
           )}
