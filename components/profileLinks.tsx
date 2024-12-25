@@ -126,6 +126,7 @@ const ProfileLinks: React.FC<{ id: string | undefined }> = ({ id }) => {
   const [showDeleteLinkModal, setShowDeleteLinkModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<{ groupId: string; linkId?: string } | null>(null);
 
+
   useEffect(() => {
     if (id) {
       fetchGroups(id);
@@ -142,13 +143,17 @@ const ProfileLinks: React.FC<{ id: string | undefined }> = ({ id }) => {
       const response = await fetch(`${API_BASE_URL}/groups/${profileId}`);
       if (response.ok) {
         const data = await response.json();
+
+        console.log('data with groups', data)
         if (Array.isArray(data.groups)) {
           setGroups(data.groups);
         } else {
-          throw new Error('Received invalid data format for groups');
+          setGroups([]); // No groups found
+          console.warn("No groups found for this user");
         }
       } else {
-        throw new Error('Failed to fetch groups');
+        throw new Error(`API Error: ${response.statusText}`);
+
       }
     } catch (error) {
       console.error("Error fetching groups:", error);
