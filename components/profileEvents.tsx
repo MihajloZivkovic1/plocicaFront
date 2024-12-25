@@ -5,8 +5,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-
 import { Plus, ChevronDown, ChevronUp } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 import { EventWalkthrough } from '@/components/ui/EventWalkthrough'
@@ -70,16 +68,6 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
 
   const addNewEvent = async () => {
-    const formattedTime = newEvent.time.includes(":") && newEvent.time.split(":").length === 2
-      ? `${newEvent.time}:00`
-      : newEvent.time;
-
-
-
-    const formattedDate = newEvent.date;
-
-
-    console.log('time to send', newEvent.time);
     if (!newEvent.title || !newEvent.date || !newEvent.time) {
       toast({
         title: "Greška",
@@ -177,7 +165,6 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
       });
 
       if (response.ok) {
-        const updatedEventData = await response.json();
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
             event.id === eventId ? {

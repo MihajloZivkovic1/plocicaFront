@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Trash2, Pencil, X, Check } from 'lucide-react'
 
 interface Event {
@@ -20,7 +19,7 @@ interface EventListProps {
   pomeni: { id: number; title: string }[]
 }
 
-export function EventList({ events, onDelete, onUpdate, pomeni }: EventListProps) {
+export function EventList({ events, onDelete, onUpdate }: EventListProps) {
   const [editingEvent, setEditingEvent] = useState<string | null>(null)
   const [editedEvent, setEditedEvent] = useState<Partial<Event>>({})
 
