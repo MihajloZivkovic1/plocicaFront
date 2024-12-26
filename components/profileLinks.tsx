@@ -148,7 +148,7 @@ const ProfileLinks: React.FC<{ id: string | undefined }> = ({ id }) => {
         if (Array.isArray(data.groups)) {
           setGroups(data.groups);
         } else {
-          setGroups([]); // No groups found
+          setGroups([]);
           console.warn("No groups found for this user");
         }
       } else {
