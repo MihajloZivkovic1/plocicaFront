@@ -135,3 +135,7 @@ body {
     margin: 2px;
   }
 }
+
+.border-width-24 {
+  border-width: 24px;
+}
