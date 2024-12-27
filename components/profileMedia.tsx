@@ -26,7 +26,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
   const fetchMedia = async () => {
     if (!id) return;
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`);
+      const response = await fetch(`http://localhost:3000/media/${id}`);
       const data = await response.json();
       const mediaArray = data.media;
       if (Array.isArray(mediaArray)) {
@@ -42,7 +42,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
 
   const deleteMedia = async (mediaId: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/media/${mediaId}`, {
+      const response = await fetch(`http://localhost:3000/media/${mediaId}`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ mediaId: mediaId }),
@@ -75,7 +75,7 @@ export default function ProfileMedia({ id }: { id: string | undefined }) {
       formData.append('timestamp', Date.now().toString());
 
       try {
-        const response = await fetch(`https://plocicaapi.onrender.com/media/${id}`, {
+        const response = await fetch(`http://localhost:3000/media/${id}`, {
           method: 'POST',
           body: formData,
         });

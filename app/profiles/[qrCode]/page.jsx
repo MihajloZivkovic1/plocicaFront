@@ -5,7 +5,7 @@ import ProfileData from './profileData';
 
 
 async function fetchProductData(qrCode) {
-  const res = await fetch(`https://plocicaapi.onrender.com/products/${qrCode}`, {
+  const res = await fetch(`http://localhost:3000/products/${qrCode}`, {
     cache: 'no-store'
   });
   if (!res.ok) {
