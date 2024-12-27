@@ -22,7 +22,7 @@ export default async function Dashboard() {
     );
   }
 
-  const res = await fetch(`https://plocicaapi.onrender.com/users/getUsersProfiles/${userId}`);
+  const res = await fetch(`http://localhost:3000/users/getUsersProfiles/${userId}`);
   const profiles = await res.json();
 
   return (

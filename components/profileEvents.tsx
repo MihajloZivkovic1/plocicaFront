@@ -40,7 +40,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/events/${id}`)
+      const response = await fetch(`http://localhost:3000/events/${id}`)
       const data = await response.json()
 
       if (Array.isArray(data)) {
@@ -78,7 +78,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
     }
 
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/events/create/${id}`, {
+      const response = await fetch(`http://localhost:3000/events/create/${id}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -127,7 +127,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
   const deleteEvent = async (eventId: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
+      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ eventId: eventId })
@@ -154,7 +154,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 
   const updateEvent = async (eventId: string, updatedEvent: Partial<Event>) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
+      const response = await fetch(`http://localhost:3000/events/${eventId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -296,7 +296,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 //     const formattedTime = time.includes(":") && time.split(":").length === 2 ? `${time}:00` : time;
 //     const formattedDate = "2024-02-01"
 
-//     const response = await fetch(`https://plocicaapi.onrender.com/events/${eventId}`, {
+//     const response = await fetch(`http://localhost:3000/events/${eventId}`, {
 //       method: "PUT",
 //       headers: { 'Content-Type': 'application/json' },
 //       body: JSON.stringify({
@@ -340,7 +340,7 @@ export default function ProfileEvents({ id }: { id: string | undefined }) {
 //   console.log(newEvent.time);
 
 //   try {
-//     const response = await fetch(`https://plocicaapi.onrender.com/events/create/${id}`, {
+//     const response = await fetch(`http://localhost:3000/events/create/${id}`, {
 //       method: "POST",
 //       headers: {
 //         'Content-type': 'application/json'

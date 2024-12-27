@@ -19,7 +19,7 @@ interface Group {
   Links: Link[];
 }
 
-const API_BASE_URL = "https://plocicaapi.onrender.com";
+const API_BASE_URL = "http://localhost:3000";
 
 const AddGroupForm: React.FC<{ onAddGroup: (name: string) => void; isLoading: boolean }> = ({ onAddGroup, isLoading }) => {
   const [groupName, setGroupName] = useState('')

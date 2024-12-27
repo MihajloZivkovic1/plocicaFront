@@ -28,7 +28,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const fetchStories = async () => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/stories/${id}`);
+      const response = await fetch(`http://localhost:3000/stories/${id}`);
       const data = await response.json();
       setStories(data.stories);
     } catch (error) {
@@ -38,7 +38,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const addNewStory = async () => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/stories/create/${id}`, {
+      const response = await fetch(`http://localhost:3000/stories/create/${id}`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -63,7 +63,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const deleteStory = async (storyId: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/stories/${storyId}`, {
+      const response = await fetch(`http://localhost:3000/stories/${storyId}`, {
         method: "DELETE",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ storyId: storyId })
@@ -82,7 +82,7 @@ export default function ProfileStories({ id }: { id: string | undefined }) {
 
   const updateStory = async (storyId: string, updatedTitle: string, updatedText: string) => {
     try {
-      const response = await fetch(`https://plocicaapi.onrender.com/stories/${storyId}`, {
+      const response = await fetch(`http://localhost:3000/stories/${storyId}`, {
         method: "PUT",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

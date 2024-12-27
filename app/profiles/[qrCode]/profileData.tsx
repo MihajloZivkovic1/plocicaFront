@@ -9,7 +9,7 @@ import { Book, Calendar, BookOpen, MapPin } from 'lucide-react'
 import { fetchMedia } from '@/app/lib/fetchMedia'
 import InteractiveImage from '@/components/ui/InteractiveImage'
 import { Gallery } from '@/components/ui/Gallery'
-
+import ProfileGroups from "@/components/ui/profile-groups"
 
 interface MediaItem {
   mediaType: 'photo' | 'video';
@@ -30,7 +30,7 @@ interface Event {
 }
 
 async function fetchProfileData(qrCode: string) {
-  const res = await fetch(`https://plocicaapi.onrender.com/profiles/${qrCode}`)
+  const res = await fetch(`http://localhost:3000/profiles/${qrCode}`)
   if (!res.ok) {
     throw new Error('Failed to fetch profile data')
   }
@@ -44,7 +44,9 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
   const stories = profile.Stories || []
   const events = profile.Events || []
 
+  const groups = profile.Groups || []
 
+  console.log(groups);
 
   const media = await fetchMedia(profile.id);
   const mediaArray = media.media
@@ -58,13 +60,6 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
       month: "2-digit",
       year: "numeric",
     }).replace(/\//g, "/")
-  }
-
-  const formatTime = (time: string) => {
-    return new Date(time).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit'
-    })
   }
 
   return (
@@ -141,7 +136,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
                       <h3 className="text-lg sm:text-lg font-semibold">{event.title}</h3>
                       <p className="text-lg sm:text-lg text-gray-600">{formatDate(event.dateOfEvent)}</p>
                       <p className="text-lg sm:text-lg text-gray-600">{event.location}</p>
-                      <p className="text-lg sm:text-lg text-gray-600">{formatTime(event.timeOfEvent)}</p>
+                      <p className="text-lg sm:text-lg text-gray-600">{event.timeOfEvent.slice(0, 5)}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -152,6 +147,10 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
 
             <Gallery images={images} videos={videos} />
 
+
+            <Separator className="my-4 sm:my-6" />
+
+            <ProfileGroups groups={groups} />
 
             <Separator className="my-4 sm:my-6" />
 
@@ -169,6 +168,7 @@ export default async function ProfileData({ qrCode }: { qrCode: string }) {
           </CardContent>
         </Card>
       </div>
+      <Separator className="my-4 sm:my-6" />
 
 
     </div>

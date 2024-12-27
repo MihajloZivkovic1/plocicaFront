@@ -32,7 +32,7 @@ export async function login(credentials: { email: string; password: string }) {
     SECRET_KEY
   ).toString();
   console.log("Ecnrypted Payload", encryptedPayload);
-  const res = await fetch('https://plocicaapi.onrender.com/users/login', {
+  const res = await fetch('http://localhost:3000/users/login', {
     method: "POST",
     headers: {
       'Content-Type': 'application/json',
