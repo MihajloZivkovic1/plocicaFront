@@ -62,7 +62,7 @@ export default function BioEdit({ id }: { id: string | undefined }) {
         throw new Error('Greška pri čuvanju biografije');
       }
       setIsRedirecting(true);
-      router.push(`/edit-profile/${id}?tab=events`)
+      router.push(`/edit-profile/${id}?tab=media`)
 
       toast({
         title: "Success",
