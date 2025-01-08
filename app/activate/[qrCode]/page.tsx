@@ -25,7 +25,7 @@ async function fetchProductData(qrCode: string) {
   }
 }
 
-export default async function ActivatePage({ params }: { params: { qrCode: string } }) {
+export default async function ActivatePage({ params }: { params: Promise<{ qrCode: string }> }) {
   const { qrCode } = await params;
 
   console.log(qrCode);

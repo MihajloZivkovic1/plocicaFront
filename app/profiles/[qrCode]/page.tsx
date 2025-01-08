@@ -20,8 +20,8 @@ async function fetchProductData(qrCode: string) {
   return res.json();
 }
 
-export default async function ProfilePage({ params }: { params: { qrCode: string } }) {
-  const { qrCode } = params;
+export default async function ProfilePage({ params }: { params: Promise<{ qrCode: string }> }) {
+  const { qrCode } = await params;
 
   let productData;
   try {
