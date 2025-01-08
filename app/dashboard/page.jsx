@@ -1,41 +1,67 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 import { getSession } from '../../lib'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CalendarIcon, PencilIcon, EyeIcon } from 'lucide-react'
+import { CalendarIcon, PencilIcon, EyeIcon, PlusIcon } from 'lucide-react'
+import { AddProfileModal } from '@/components/addProfileModal'
 
-export default async function Dashboard() {
-  const session = await getSession();
-  const userId = session?.user?.user?.id;
+export default function Dashboard() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [session, setSession] = useState(null)
+  const [profiles, setProfiles] = useState([])
 
-  if (!userId) {
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <Card>
-          <CardContent className="pt-6">
-            <p className="text-center text-gray-600">Korisnik nije ulogovan</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
+  React.useEffect(() => {
+    async function fetchData() {
+      const sessionData = await getSession()
+      setSession(sessionData)
 
-  const res = await fetch(`http://localhost:3000/users/getUsersProfiles/${userId}`);
-  const profiles = await res.json();
+      if (sessionData?.user?.user?.id) {
+        const res = await fetch(`http://localhost:3000/users/getUsersProfiles/${sessionData.user.user.id}`)
+        const profilesData = await res.json()
+        setProfiles(profilesData)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const userId = session?.user?.user?.id
+
+  console.log(userId);
+
+  // if (!userId) {
+  //   return (
+  //     <div className="flex items-center justify-center h-screen">
+  //       <Card>
+  //         <CardContent className="pt-6">
+  //           <p className="text-center text-gray-600">Korisnik nije ulogovan</p>
+  //         </CardContent>
+  //       </Card>
+  //     </div>
+  //   )
+  // }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mt-8 p-4 text-center">Vaše Pločice</h1>
+    <div className="container mx-auto px-4 py-8 mt-12">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold">Vaše Pločice</h1>
+        <Button onClick={() => setIsModalOpen(true)} className='mt-1'>
+          <PlusIcon className="w-4 h-4 mr-2" />
+          Dodaj Novi Profil
+        </Button>
+      </div>
       {profiles.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pt-4">
           {profiles.map(profile => {
             const formattedDate = new Date(profile.dateOfBirth).toLocaleDateString("en-GB", {
               day: "2-digit",
               month: "2-digit",
               year: "numeric",
-            }).replace(/\//g, "/");
+            }).replace(/\//g, "/")
 
             return (
               <Card key={profile.id} className="overflow-hidden">
@@ -71,7 +97,7 @@ export default async function Dashboard() {
                   </Link>
                 </CardFooter>
               </Card>
-            );
+            )
           })}
         </div>
       ) : (
@@ -81,7 +107,13 @@ export default async function Dashboard() {
           </CardContent>
         </Card>
       )}
+      <AddProfileModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        userEmail={session?.user?.user?.email}
+        userId={userId}
+      />
     </div>
-  );
+  )
 }
 
