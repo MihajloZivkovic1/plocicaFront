@@ -113,9 +113,9 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex justify-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Nemate nalog?{" "}
-            <a href="/register" className="text-blue-600 hover:underline dark:text-blue-400">
-              Registrujte se
+            Zaboravili ste šifru?{" "}
+            <a href="/forgot-password" className="text-blue-600 hover:underline dark:text-blue-400">
+              Promeni šifru
             </a>
           </p>
         </CardFooter>
