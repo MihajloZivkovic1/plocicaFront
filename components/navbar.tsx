@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { UserRoundIcon as UserRoundPen, Home, Phone, ShoppingCart, Menu, X } from 'lucide-react';
+import { UserRoundIcon as UserRoundPen, Home, Phone, ShoppingCart, Menu, X, Settings } from 'lucide-react';
 
 export function Navbar({ session }: NavbarProps) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -44,6 +44,9 @@ export function Navbar({ session }: NavbarProps) {
               </div>
             } className={classNameForLinks} />
             <NavLink href="/order-now" label="Poruči Pločicu" icon={<ShoppingCart className="w-5 h-5" />} className={classNameForLinks} />
+            {isLoggedIn && (
+              <NavLink href="/settings" label="Podešavanja" icon={<Settings className="w-5 h-5" />} className={classNameForLinks} />
+            )}
 
             {isLoggedIn ? (
               <form action="/api/auth/logout" method="POST">
@@ -78,6 +81,9 @@ export function Navbar({ session }: NavbarProps) {
                 </div>
               } onClick={toggleMenu} className={classNameForLinks} />
               <NavLink href="/order-now" label="Poruči Pločicu" icon={<ShoppingCart className="w-5 h-5" />} onClick={toggleMenu} className={classNameForLinks} />
+              {isLoggedIn && (
+                <NavLink href="/settings" label="Podešavanja" icon={<Settings className="w-5 h-5" />} onClick={toggleMenu} className={classNameForLinks} />
+              )}
 
               {isLoggedIn ? (
                 <form
