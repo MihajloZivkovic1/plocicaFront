@@ -84,6 +84,7 @@ export default function UserSettings() {
         })
       }
     } catch (error) {
+      console.error(error)
       toast({
         title: "Greška",
         description: "Došlo je do greške prilikom promene lozinke.",
